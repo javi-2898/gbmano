@@ -1,0 +1,35 @@
+
+.contenedor-imagen {
+   max-width: 90vw; 
+   margin: 0 auto;
+}
+
+.imagen {
+   width: 100%; 
+   height: auto;
+   image-rendering: auto;
+   object-fit: cover;     /* recorta sin deformar */
+   object-position: center; /* centra la parte visible */
+}
+
+:host ::ng-deep .mat-mdc-dialog-content {
+   max-height: 85vh;
+}
+
+:host ::ng-deep .mat-mdc-card-content {
+   padding: 10px 10px;
+}
+
+:host ::ng-deep .mat-mdc-dialog-actions {
+   padding: var(--mat-dialog-actions-padding, 6px 24px);
+}
+
+:host ::ng-deep .mat-mdc-dialog-title {
+   padding: var(--mat-dialog-headline-padding, 6px 24px 6px);
+}
+
+@media (max-width: 480px) {  
+   .dialogo-sin-padding {
+      padding: 0px !important;
+   }
+}

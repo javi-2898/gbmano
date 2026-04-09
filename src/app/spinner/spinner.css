@@ -1,0 +1,88 @@
+.spinner-overlay{
+   position: fixed; 
+   z-index: 1000; 
+   background: rgba(0, 0, 0, .4); 
+   opacity: 1; 
+   width: calc(100% - 0rem);
+   height: calc(100% - 0rem);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   left: 0px;
+   top: 0px;
+}
+
+.spinner {
+   width: 100px;
+   height: auto;
+   position: absolute;
+   top: 47%;
+   left: 51%;
+   transform: translate(-50%, -50%);
+   animation: rotate-move 2s ease-in-out infinite;
+   z-index: 1000;
+}
+
+.dot {
+   width: 70px;
+   height: 70px;
+   border-radius: 50%;
+   background-color: #000;
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   margin: auto;
+}
+
+.dot-3 {
+   background-color: #e84f11;
+   animation: dot-3-move 2s ease infinite, index 6s ease infinite;
+}
+
+.dot-2 {
+   background-color: #2b2f86;
+   animation: dot-2-move 2s ease infinite, index 6s -4s ease infinite;
+}
+
+.dot-1 {
+   background-color: #ffffff;
+   animation: dot-1-move 2s ease infinite, index 6s -2s ease infinite;
+}
+
+@keyframes dot-3-move {
+   20% { transform: scale(1); }
+   45% { transform: translateY(-18px) scale(0.45); }
+   60% { transform: translateY(-90px) scale(0.45); }
+   80% { transform: translateY(-90px) scale(0.45); }
+   100% { transform: translateY(0px) scale(1); }
+}
+
+@keyframes dot-2-move {
+   20% { transform: scale(1); }
+   45% { transform: translate(-16px, 12px) scale(0.45); }
+   60% { transform: translate(-80px, 60px) scale(0.45); }
+   80% { transform: translate(-80px, 60px) scale(0.45); }
+   100% { transform: translateY(0px) scale(1); }
+}
+
+@keyframes dot-1-move {
+   20% { transform: scale(1); }
+   45% { transform: translate(16px, 12px) scale(0.45); }
+   60% { transform: translate(80px, 60px) scale(0.45); }
+   80% { transform: translate(80px, 60px) scale(0.45); }
+   100% { transform: translateY(0px) scale(1);}
+}
+
+@keyframes rotate-move {
+   55% { transform: translate(-50%, -50%) rotate(0deg); }
+   80% { transform: translate(-50%, -50%) rotate(360deg); }
+   100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes index {
+   0%,100% { z-index: 3; }
+   33.3% { z-index: 2; }
+   66.6% { z-index: 1;}
+}

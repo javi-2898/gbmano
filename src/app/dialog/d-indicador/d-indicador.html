@@ -1,0 +1,283 @@
+<h2 mat-dialog-title>
+   {{ fun.Diccionario(data.title) | uppercase }} 
+   {{(data.title == 'Merma Abarrote' || data.title == 'Merma Perecdero') ? 'FAMILIA' : ''}} 
+   {{ data.cve_sucursal ? 'Suc ' + data.cve_sucursal : '' }} 
+</h2>
+
+<mat-dialog-content class="dialogo-sin-padding"> 
+   <mat-card appearance="outlined" style="background: #ffffff;">
+      <mat-card-content>
+         <div class="flex flex-wrap">
+            <!-- =================================== ROTACION PERSONAL=================================== -->
+            @if (data.title == 'Rotacion Personal') {
+               <div class="col-12 sm:col-6">
+                  <div class="flex flex-wrap ">
+                     <div class="col-6">
+                        <span>Plantilla Autorizada: {{ varb.total }}</span>
+                     </div>
+
+                     <div class="col-6">
+                        <span>Bajas del Mes: {{varb.table.length}}</span>
+                     </div>
+                  </div>
+               </div>
+            }
+
+            <!-- =================================== INOCUIDAD / EJECUCION =================================== -->
+            @if (data.title == 'Inocuidad' || data.title == 'Ejecucion') {
+               <div class="col-12 sm:col-6">  
+                  <div class="flex flex-wrap gap-3">
+                     <div>
+                        <label for="non-fluid" class="block">Fecha Inicio: {{fun.Primer_Dia_Mes(data.month+'/'+data.year)}}</label>
+                     </div>
+
+                     <div>
+                        <label for="non-fluid" class="block">Fecha Fin: {{fun.Ultimo_Dia_Mes(data.month+'/'+data.year)}}</label>
+                     </div>
+                  </div>
+               </div>
+            }
+
+            <div class="{{data.title == 'Rotacion Personal' || data.title == 'Inocuidad' || data.title == 'Ejecucion' ? 'col-12 sm:col-6' : 'col-12'}}">
+               <div class="flex flex-wrap">
+                  <p-iconfield iconPosition="left" class="ml-auto">
+                     <p-inputicon>
+                        <i class="pi pi-search"></i>
+                     </p-inputicon>
+                     <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                  </p-iconfield>
+               </div>
+            </div>
+         </div>
+
+         <p-table #dt size="small"
+            showGridlines
+            [value]="varb.table"
+            [loading]="varb.loading"
+            [scrollable]="true"
+            [customSort]="true"
+            scrollHeight="500px"
+            [globalFilterFields]="[
+               'cvefamilia', 'familia', 'ventaactual', 'ventaanterior', 'Crecimiento', 'Descripcion', 'Clave',
+               'pieza', 'costoTotal', 'venta', 'porc',
+               'cve_empleado', 'nombrelargo', 'fecha', 'descripcion',
+               'cve_sucursal', 'sucursal', 'evaluacion', 'auditor', 'auditado', 'fechaEvaluacion', 'resultado', 'Participacion'
+            ]"
+            (sortFunction)="fun.customSort($event)"
+         >
+
+            <!-- =================================== VENTA =================================== -->
+            @if (data.title == 'Venta') {
+               <ng-template #header>
+                  <tr>
+                     <th pSortableColumn="Clave" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Clave
+                           <p-sortIcon field="Clave" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="Descripcion" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Descripción
+                           <p-sortIcon field="Descripcion" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="ventaactual" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Venta Actual
+                           <p-sortIcon field="ventaactual" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="ventaanterior" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Vta Promedio Día
+                           <p-sortIcon field="ventaanterior" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="Crecimiento" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Crecimiento
+                           <p-sortIcon field="Crecimiento" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="Participacion" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Participación
+                           <p-sortIcon field="Participacion" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="crecimiento" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Crecimiento Monto
+                           <p-sortIcon field="crecimiento" />
+                        </div>
+                     </th>
+                  </tr>
+               </ng-template>
+
+               <ng-template #body let-item>
+                  <tr class="cursor" (click)="Open_Dialog_Venta_Departamento(item)">
+                     <td class="text-center td-general">{{ item.Clave }}</td>
+                     <td class="text-center td-general">{{ item.Descripcion }}</td>
+                     <td class="text-center td-general" style="text-wrap-mode: nowrap;">{{ item.ventaactual | currency:'MXN':'symbol-narrow':'1.0-2' }}</td>
+                     <td class="text-center td-general" style="text-wrap-mode: nowrap;">{{ item.ventaanterior | currency:'MXN':'symbol-narrow':'1.0-2' }}</td>
+                     <td class="text-center td-general {{item.Crecimiento < 0 ? 'text-red-600' : ''}}">{{ item.Crecimiento | number: '1.0-2' }}%</td>
+                     <td class="text-center td-general">{{ item.Participacion | number: '1.0-2' }}%</td>
+                     <td class="text-center td-general {{item.CrecimientoMonto < 0 ? 'text-red-600' : ''}}">{{ item.CrecimientoMonto | currency:'MXN':'symbol-narrow':'1.0-2' }}</td>
+                  </tr>
+               </ng-template>
+            }
+
+            <!-- =================================== MERMA ABARROTES / MERMA PERECEDERO =================================== -->
+            @if (data.title == 'Merma Abarrote' || data.title == 'Merma Perecdero') {
+               <ng-template #header>
+                  <tr>
+                     <th pSortableColumn="cve_familia" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Clave Familia
+                           <p-sortIcon field="cve_familia" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="descripcion" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Descripción
+                           <p-sortIcon field="descripcion" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="piezas" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Piezas
+                           <p-sortIcon field="piezas" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="costoTotal" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Costo Total
+                           <p-sortIcon field="costoTotal" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="venta" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Venta
+                           <p-sortIcon field="venta" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="porc" class="th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Porcentaje
+                           <p-sortIcon field="porc" />
+                        </div>
+                     </th>
+                     @if (data.title == 'Merma Perecdero') {
+                        <th pSortableColumn="porc" class="th-general">
+                           <div class="flex justify-content-center gap-1">
+                              Objetivo
+                              <p-sortIcon field="porc" />
+                           </div>
+                        </th>
+                     }
+                  </tr>
+               </ng-template>
+
+               <ng-template #body let-item>
+                  <tr class="cursor" (click)="Open_Dialog_Merma_Grupo(item)">
+                     <td class="text-center td-general">{{ item.cve_familia }}</td>
+                     <td class="text-center td-general">{{ item.descripcion }}</td>
+                     <td class="text-center td-general">{{ item.piezas | number: '1.0-2' }}</td>
+                     <td class="text-center td-general" style="text-wrap-mode: nowrap;">${{ item.costoTotal | number: '1.0-2' }}</td>
+                     <td class="text-center td-general" style="text-wrap-mode: nowrap;">${{ item.venta | number: '1.0-2' }}</td>
+                     <td class="text-center td-general {{ item.porc > item.objetivo && data.title == 'Merma Perecdero' ? 'text-red-600' : '' }} ">
+                        {{ item.porc | number: '1.0-2' }}%
+                     </td>
+                     @if (data.title == 'Merma Perecdero') {
+                        <td class="text-center td-general">{{ item.objetivo | number: '1.0-2' }}%</td>
+                     }
+                  </tr>
+               </ng-template>
+            }
+
+            <!-- =================================== ROTACION PERSONAL=================================== -->
+            @if (data.title == 'Rotacion Personal') {
+               <ng-template #header>
+                  <tr>
+                     <th class="text-center th-general">Clave</th>
+                     <th class="text-center th-general">Nombre</th>
+                     <th class="text-center th-general">Fecha Baja</th>
+                     <th class="text-center th-general">Descripción</th>
+                  </tr>
+               </ng-template>
+
+               <ng-template #body let-item>
+                  <tr>
+                     <td class="text-center td-general">{{ item.cve_empleado }}</td>
+                     <td class="text-center td-general">{{ item.nombrelargo }}</td>
+                     <td class="text-center td-general">{{ item.fecha }}</td>
+                     <td class="text-center td-general">{{ item.descripcion }}</td>
+                  </tr>
+               </ng-template>
+            }
+
+            <!-- =================================== INOCUIDAD / EJECUCION =================================== -->
+            @if (data.title == 'Inocuidad' ||  data.title == 'Ejecucion') {
+               <ng-template #header>
+                  <tr>
+                     <th class="text-center th-general">Suc</th>
+                     <th class="text-center th-general">Sucursal</th>
+                     <th class="text-center th-general">Evaluación</th>
+                     <th class="text-center th-general">Auditor</th>
+                     <th class="text-center th-general">Auditado</th>
+                     <th class="text-center th-general">Fecha Evaluación</th>
+                     <th class="text-center th-general">Resultado</th>
+                     <th class="text-center th-general">Exportar</th>
+                  </tr>
+               </ng-template>
+
+               <ng-template #body let-item>
+                  <tr>
+                     <td class="text-center td-general">{{ item.cve_sucursal }}</td>
+                     <td class="text-center td-general">{{ fun.toTitulo(item.sucursal) }}</td>
+                     <td class="text-center td-general">{{ item.evaluacion }}</td>
+                     <td class="text-center td-general">{{ item.auditor }}</td>
+                     <td class="text-center td-general">{{ item.auditado }}</td>
+                     <td class="text-center td-general" style="text-wrap-mode: nowrap;">{{ item.fechaEvaluacion }}</td>
+                     <td class="text-center td-general">{{ item.resultado | number : '1.0-2' }}%</td>
+                     <td class="text-center">
+                        @if (item.modo != 'Hist') {
+                           <p-button label="Encuesta" icon="bi bi-file-earmark-excel" size="small" [rounded]="true" [loading]="varb.loading_2" (onClick)="Read_Encuesta(item)" />
+                        }
+                     </td>
+                  </tr>
+               </ng-template>
+            }
+
+            <ng-template #emptymessage>
+               <tr>
+                  <td [attr.colspan]="cols">
+                     <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                        <img src="undraw/warning.svg" height="150" alt="warning" />
+                        <div class="alert-table">{{varb.message}}</div>
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+
+            <ng-template pTemplate="loadingbody">
+               <tr>
+                  <td [attr.colspan]="cols">
+                     <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                        <div class="loader-container">
+                           <div class="loader"></div>
+                           <div class="loader-text">Cargando datos, por favor espere...</div>
+                        </div> 
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+         </p-table>
+      </mat-card-content>
+   </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flex gap-2">
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" variant="outlined" [rounded]="true" />
+</mat-dialog-actions>

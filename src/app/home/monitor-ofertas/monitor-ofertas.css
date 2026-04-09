@@ -1,0 +1,11 @@
+.bg-green {
+   background-color: var(--color-light-green);
+}
+
+.bg-danger {
+   background-color: var(--color-light-danger);
+}
+
+.bg-warn {
+   background-color: var(--color-light-warn);
+}

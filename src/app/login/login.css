@@ -1,0 +1,58 @@
+.container {
+   display: grid;
+   place-items: center;
+   height: 100vh;
+}
+
+.header-title {
+   color: var(--color-primary);
+   font-weight: 900;
+   font-size: 16px;
+   letter-spacing: 1px;
+}
+
+:host ::ng-deep .p-inputtext {
+   border-radius: 15px;
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+   border-color: rgba(133, 189, 215, 0.8784313725);
+}
+
+:host ::ng-deep .p-card {
+   width: 30rem;
+   overflow: hidden; 
+   padding: 3rem 3rem 1rem 3rem;
+	box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+	border-radius: 40px;
+   border: 1px solid rgba(133, 189, 215, 0.8784313725);
+}
+
+@media (max-width: 480px) {
+   .container {
+      margin: auto 20px;
+   }
+
+   :host ::ng-deep .p-card {
+      width: 100%;
+      padding: 3rem 1rem 1rem 1rem;
+   }
+
+   :host ::ng-deep .p-card-body {
+      padding: 1.25rem 0;
+   }
+}
+
+/* Teléfonos normales a tablets pequeñas */
+@media (min-width: 481px) and (max-width: 767px) {
+   .container {
+      margin: auto 20px;
+   }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {}
+
+@media (min-width: 1024px) and (max-width: 1439px) {}
+
+/* Pantallas grandes */
+@media (min-width: 1440px) {}

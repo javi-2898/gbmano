@@ -1,0 +1,4 @@
+:host ::ng-deep p-overlay {
+   position: fixed;
+   z-index: 2;
+}

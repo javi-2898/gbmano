@@ -1,0 +1,27 @@
+label {
+   border: 1px solid #047857;
+   border-radius: 10px;
+   padding: 10.5px 10px;
+   font-family: 'Helvetica', sans-serif;
+   transition: .5s;
+   cursor: pointer;
+   background-color: #fff;
+   color: #047857;
+}
+
+label:hover {
+   background-color: #eee;
+}
+
+
+:host ::ng-deep .p-button-outlined.p-button-info {
+   border-color: #0ea5e9;
+}
+
+:host ::ng-deep .p-button-outlined.p-button-success {
+   border-color: #22c55e;
+}
+
+:host ::ng-deep .p-button-outlined.p-button-danger {
+   border-color: #ef4444;
+}

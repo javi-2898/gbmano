@@ -1,0 +1,94 @@
+<h2 mat-dialog-title><i class="{{data.icon}} text-xl"></i> {{data.title | uppercase}} </h2>
+
+<mat-dialog-content [style]="{padding: '10px 24px'}">
+   <div class="col-12 flex flex-wrap">
+      <div class="col-6 sm:col-4">
+         <span>Fecha Inicio: {{ varb.fecha }} {{varb.horaInicio}}</span>
+      </div>
+
+      <div class="col-6 sm:col-4">
+         <span>Fecha Fin: {{ varb.fechaFin }} {{varb.horaFin}}</span>
+      </div>
+
+      <div class="col-12 sm:col-4">
+         <span>Tiempo Transcurrido: {{ varb.tiempo }}</span>
+      </div>
+   </div>
+
+   <div class="col-12 flex flex-wrap">
+      <div *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="col-6 sm:col-3 flex flex-column justify-content-center align-items-center">
+         <p-knob [(ngModel)]="varb.kpi1" [valueTemplate]="'{value}%'" [ngClass]="varb.kpi1 > 80 ? '' : 'red'" [readonly]="true"></p-knob>
+         <div class="text-center">Orden y Limpieza</div>
+      </div>
+
+      <div *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="col-6 sm:col-3 flex flex-column justify-content-center align-items-center">
+         <p-knob [(ngModel)]="varb.kpi2" [valueTemplate]="'{value}%'" [ngClass]="varb.kpi2 > 80 ? '' : 'red'" [readonly]="true"></p-knob>
+         <div class="text-center">Personal</div>
+      </div>
+
+      <div *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="col-6 sm:col-3 flex flex-column justify-content-center align-items-center">
+         <p-knob [(ngModel)]="varb.kpi3" [valueTemplate]="'{value}%'" [ngClass]="varb.kpi3 > 80 ? '' : 'red'" [readonly]="true"></p-knob>
+         <div class="text-center">Calidad del Producto</div>
+      </div>
+      
+      <div class="{{data.tipo !== 'EJECUCION' ? 'col-6 sm:col-3 ' : 'col-12'}} flex flex-column justify-content-center align-items-center">
+         <p-knob [(ngModel)]="varb.totalPuntos" [valueTemplate]="'{value}%'" size="150" [ngClass]="varb.totalPuntos > 80 ? '' : 'red'" [readonly]="true"></p-knob>
+         <div class="text-center">TOTAL</div>
+      </div>
+   </div>
+   
+   <p-table #dt size="small"
+      showGridlines
+      [value]="varb.table"
+      [loading]="varb.loading"
+   >
+      <ng-template #header>
+         <tr>
+            <th class="text-center">Area</th>
+            <th *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">Orden y Limpieza</th>
+            <th *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">Personal</th>
+            <th *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">Calidad del Producto</th>
+            <th class="text-center">Total</th>
+         </tr>
+      </ng-template>
+
+      <ng-template #body let-item>
+         <tr>
+            <td class="text-center">{{ item.area }}</td>
+            <td *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">{{ item.KPI1 | number: '1.0-2' }} %</td>
+            <td *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">{{ item.KPI2 | number: '1.0-2' }} %</td>
+            <td *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">{{ item.KPI3 | number: '1.0-2' }} %</td>
+            <td class="text-center">{{ item.Total | number: '1.0-2' }} %</td>
+         </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+         <tr>
+            <td colspan="5">
+               <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                  <img src="undraw/warning.svg" height="150" alt="warning" />
+                  <div class="alert-table">{{varb.message_2}}</div>
+               </div>
+            </td>
+         </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody">
+         <tr>
+            <td colspan="5">
+               <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                  <div class="loader-container">
+                     <div class="loader"></div>
+                     <div class="loader-text">Cargando datos, por favor espere...</div>
+                  </div> 
+               </div>
+            </td>
+         </tr>
+      </ng-template>
+   </p-table>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flex gap-2">
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" variant="outlined" [rounded]="true" />
+   <p-button label="Exportar Encuesta" icon="bi bi-file-earmark-excel" [rounded]="true" [loading]="varb.loading_2" (onClick)="Read_Encuesta()" />
+</mat-dialog-actions>

@@ -1,0 +1,187 @@
+<div class="header-title">
+   <h1>Resultados Generales</h1>
+</div>
+
+<!-- =================================== TABLA =================================== -->
+<mat-card class="mt-3 sm:mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <div class="flex flex-wrap align-items-center justify-content-center">
+
+         <div class="flex flex-wrap col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6">
+
+            <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+               <span class="font-bold">Inicio Rango</span>
+               <p-select [options]="varb.meses" [(ngModel)]="varb.selectMes" placeholder="Mes" optionLabel="mes" class="w-full" />
+               <p-select [options]="fun.year" [(ngModel)]="varb.selectYear" optionLabel="Year" placeholder="Año" class="w-full mt-2" />
+               
+            </div>
+
+            <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+               <span class="font-bold">Formato</span>
+               <p-select [options]="varb.formato" [(ngModel)]="varb.selectFormato" placeholder="Seleccionar" optionLabel="tipo" class="w-full" [showClear]="true" />
+               
+            </div>
+
+            <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+               <span class="font-bold">Fin Rango</span>   
+               <p-select [options]="varb.meses" [(ngModel)]="varb.selectMesFin" placeholder="Mes" optionLabel="mes" class="w-full" />
+               <p-select [options]="fun.year" [(ngModel)]="varb.selectYearFin" optionLabel="Year" placeholder="Año" class="w-full mt-2" />
+            </div>
+
+            <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+               <span class="font-bold">Región</span>
+               <p-select [options]="varb.regiones" [(ngModel)]="varb.selectRegion" placeholder="Seleccionar" optionLabel="tipo" class="w-full" [showClear]="true" />
+            </div>
+
+            <div class="col-12">
+               <p-button label="Buscar" severity="info" icon="bi bi-search" (onClick)="Cargar_Search_Read()"/>
+            </div>
+
+         </div>
+
+         <div class="flex flex-wrap align-items-center justify-content-center col-12 sm:col-12 md:col-12 lg:col-2 xl:col-2">
+            <div class="circle">
+               <p-skeleton *ngIf="varb.loading" shape="circle" size="6rem" />
+
+               <div *ngIf="!varb.loading" class="circle-item {{fun.getClase(varb.total, null, 'circle')}}">
+                  {{varb.total | number : '1.2-2'}}
+               </div>
+            </div>
+         </div>
+
+         <div class="col-12 sm:col-12 md-12 lg:col-4 xl:col-4">
+            <p-skeleton *ngIf="varb.loading" width="100%" height="15rem" />
+
+            <p-table *ngIf="!varb.loading" [value]="varb.table" size="small">
+               <ng-template #header>
+                  <tr>
+                     <th></th>
+                     <th class="th-kpi">KPI</th>
+                  </tr>
+               </ng-template>
+
+               <ng-template #body let-item let-i="rowIndex">
+                  <tr>
+                     <td class="td-general">{{ fun.Diccionario(item.indicador) }}</td>
+                     <td class="td-general">
+                     
+                        <div class="progress-container">
+                           <progress class="progress-bar {{fun.getClase(item.Resultado, null, 'progress')}}" value="{{item.Resultado}}" max="100"></progress>
+                           <span class="progress-text" style="width: 100%;">
+                              {{ item.Resultado | number:'1.0-0' }} %
+                           </span>
+                        </div>
+                     </td>
+                  </tr>
+               </ng-template>
+
+               <ng-template #emptymessage>
+                  <tr>
+                     <td colspan="3" class="text-center">
+                        <img src="undraw/warning.svg" height="150" alt="warning" >
+                        <div class="alert-table">{{varb.message}}</div>
+                     </td>
+                  </tr>
+               </ng-template>
+            </p-table>
+         </div>
+
+      </div>
+   </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <p-table #dt size="small"
+         currentPageReportTemplate="Total: {totalRecords}"
+         [value]="varb.sucursales"
+         [loading]="varb.loading_2"
+         [rows]="15"
+         [rowsPerPageOptions]="[15, 30, 50, 100]"
+         [globalFilterFields]="['nombre', 'sucursal', 'Total']"
+         [paginator]="true"
+         [customSort]="true"
+         [showCurrentPageReport]="true"
+         (sortFunction)="fun.customSort($event)"
+      >
+         <ng-template #header>
+            <tr>
+               <th pSortableColumn="sucursal">
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Clave
+                     <p-sortIcon field="sucursal" />
+                  </div>
+               </th>
+               <th pSortableColumn="nombre">
+                  <div class="flex items-center gap-1 th-general">
+                     Sucursal
+                     <p-sortIcon field="nombre" />
+                  </div>
+               </th>
+               <th pSortableColumn="Total">
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Total Periodo
+                     <p-sortIcon field="Total" />
+                  </div>
+               </th>
+               
+
+               @for (mesNombre of varb.totalMeses; track mesNombre) {
+                  <th class="th-general"> {{ mesNombre }} </th>
+               }
+            </tr>
+         </ng-template>
+
+         <ng-template #body let-item>
+            <tr>
+               <td class="text-center td-general">{{ item.sucursal }}</td>
+               <td class="td-general">{{ item.nombre }}</td>
+               <td class="text-center">
+                  @if (item.Total >= 80) {
+                     <p-tag value=" {{ item.Total | number : '1.2-2'}}" severity="success" />
+                  } @else if (item.Total >= 50 && item.Total < 80) {
+                     <p-tag value=" {{ item.Total | number : '1.2-2'}}" severity="warn" />
+                  } @else {
+                     <p-tag value="{{ item.Total | number : '1.2-2'}}" severity="danger" />
+                  }
+               </td>
+               @for (mesNombre of varb.totalMeses; track mesNombre) {
+                  <td>
+                     @if (item[mesNombre] >= 80) {
+                        <p-tag value=" {{ item[mesNombre] | number : '1.2-2'}}" severity="success" />
+                     } @else if (item[mesNombre] >= 50 && item[mesNombre] < 80) {
+                        <p-tag value=" {{ item[mesNombre] | number : '1.2-2'}}" severity="warn" />
+                     } @else {
+                        <p-tag value="{{ item[mesNombre] | number : '1.2-2'}}" severity="danger" />
+                     }
+                  </td> 
+               }
+            </tr>
+         </ng-template>
+
+         <ng-template #emptymessage>
+            <tr>
+               <td colspan="3">
+                  <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                     <img src="undraw/warning.svg" height="150" alt="warning" />
+                     <div class="alert-table">{{varb.message_2}}</div>
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template pTemplate="loadingbody">
+            <tr>
+               <td colspan="3">
+                  <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                     <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text">Cargando datos, por favor espere...</div>
+                     </div> 
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+      </p-table>
+   </mat-card-content>
+</mat-card>

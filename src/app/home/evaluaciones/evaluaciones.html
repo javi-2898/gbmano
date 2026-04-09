@@ -1,0 +1,147 @@
+<div class="header-title">
+   <h1>Evaluaciones</h1>
+</div>
+
+<mat-card class="mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <div class="flex flex-wrap">
+         <div class="col-12 flex flex-wrap">
+            <div class="col-12 sm:col-12 md:col-8 lg:col-9 xl:col-8">
+               
+               <div class="flex flex-wrap gap-3">
+                  <div>
+                     <label for="non-fluid" class="font-bold mb-2 block">Fecha Inicio</label>
+                     <input type="date" pInputText [(ngModel)]="varb.fecha" />
+                  </div>
+
+                  <div>
+                     <label for="non-fluid" class="font-bold mb-2 block">Fecha Fin</label>
+                     <input type="date" pInputText [(ngModel)]="varb.fechaFin" />
+
+                     <p-button label="Buscar" class="ml-3" icon="pi pi-search" severity="info" (onClick)="Read_Auditoria()" />
+                  </div>
+               </div>
+
+            </div>
+
+            <div class="col-12 sm:col-12 md:col-4 lg:col-4 xl:col-4">
+               <div class="flex flex-wrap justify-content-end gap-3">
+                  <p-iconfield iconPosition="left" class="mtm-3 ml-auto">
+                     <p-inputicon>
+                        <i class="pi pi-search"></i>
+                     </p-inputicon>
+                     <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                  </p-iconfield>
+               </div>
+            </div>
+
+            <p-message *ngIf="varb.alert" severity="error" variant="simple">
+               <div [innerHTML]="varb.message"></div>
+            </p-message>
+         </div>
+      </div>
+      
+      <p-table #dt size="small"
+         currentPageReportTemplate="Total: {totalRecords}"
+         [value]="varb.table"
+         [loading]="varb.loading"
+         [rows]="15"
+         [rowsPerPageOptions]="[15, 30, 50, 100]"
+         [globalFilterFields]="['cve_sucursal', 'sucursal', 'tipo', 'evaluacion', 'auditor', 'auditado', 'fechaEvaluacion', 'resultado']"
+         [paginator]="true"
+         [customSort]="true"
+         [showCurrentPageReport]="true"
+         (sortFunction)="fun.customSort($event)"
+      >
+         <ng-template #header>
+            <tr>
+               <th pSortableColumn="cve_sucursal">
+                  <div class="flex justify-content-center gap-1">
+                     Suc
+                     <p-sortIcon field="cve_sucursal" />
+                  </div>
+               </th>
+               <th pSortableColumn="sucursal">
+                  <div class="flex gap-1">
+                     Sucursal
+                     <p-sortIcon field="sucursal" />
+                  </div>
+               </th>
+               <th pSortableColumn="tipo">
+                  <div class="flex justify-content-center gap-1">
+                     Tipo
+                     <p-sortIcon field="tipo" />
+                  </div>
+               </th>
+               <th pSortableColumn="evaluacion">
+                  <div class="flex justify-content-center gap-1">
+                     Evaluación
+                     <p-sortIcon field="evaluacion" />
+                  </div>
+               </th>
+               <th pSortableColumn="auditor">
+                  <div class="flex justify-content-center gap-1">
+                     Auditor
+                     <p-sortIcon field="auditor" />
+                  </div>
+               </th>
+               <th pSortableColumn="auditado" class="text-center">
+                  <div class="flex justify-content-center gap-1">
+                     Auditado
+                     <p-sortIcon field="auditado" />
+                  </div>
+               </th>
+               <th pSortableColumn="fechaEvaluacion" class="text-center" >
+                  <div class="flex justify-content-center gap-1">
+                     Fecha Evaluación
+                     <p-sortIcon field="fechaEvaluacion" />
+                  </div>
+               </th>
+               <th pSortableColumn="resultado" class="text-center">
+                  <div class="flex justify-content-center gap-1">
+                     Resultado
+                     <p-sortIcon field="resultado" />
+                  </div>
+               </th>
+            </tr>
+         </ng-template>
+
+         <ng-template #body let-item>
+            <tr (click)="onRowClick(item)" style="cursor: pointer;">
+               <td class="text-center">{{ item.cve_sucursal }}</td>
+               <td>{{ fun.toTitulo(item.sucursal) }}</td>
+               <td class="text-center">{{ item.tipo }}</td>
+               <td class="text-center">{{ item.evaluacion }}</td>
+               <td class="text-center">{{ item.auditor }}</td>
+               <td class="text-center">{{ item.auditado }}</td>
+               <td class="text-center">{{ item.fechaEvaluacion }}</td>
+               <td class="text-center">{{ item.resultado | number : '1.0-2' }} %</td>
+            </tr>
+         </ng-template>
+
+         <ng-template #emptymessage>
+            <tr>
+               <td colspan="8">
+                  <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                     <img src="undraw/warning.svg" height="150" alt="warning" />
+                     <div class="alert-table">{{varb.message_2}}</div>
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template pTemplate="loadingbody">
+            <tr>
+               <td colspan="8">
+                  <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                     <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text">Cargando datos, por favor espere...</div>
+                     </div> 
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+      </p-table>
+   </mat-card-content>
+</mat-card>

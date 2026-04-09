@@ -1,0 +1,136 @@
+<h2 mat-dialog-title> <span class="font-bold">{{ fun.Diccionario(data.title) | uppercase}}</span> {{ 'General' | uppercase }} </h2>
+
+<mat-dialog-content class="dialogo-sin-padding"> 
+   <mat-card appearance="outlined" style="background: #ffffff;">
+      <mat-card-content>
+         <div class="col-12 flex flex-wrap">
+            <p-iconfield iconPosition="left" class="ml-auto">
+               <p-inputicon>
+                  <i class="pi pi-search"></i>
+               </p-inputicon>
+               <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+            </p-iconfield>
+         </div>
+
+         <p-table #dt size="small"
+            showGridlines
+            scrollHeight="500px"
+            [value]="varb.table"
+            [loading]="varb.loading"
+            [scrollable]="true"
+            [customSort]="true"
+            [globalFilterFields]="['ventaactual', 'ventaanterior', 'Crecimiento', 'Descripcion', 'Clave', 'Participacion']"
+            (sortFunction)="fun.customSort($event)"
+         >
+            <ng-template #header>
+               <tr>
+                  <th pSortableColumn="Clave" class="text-center th-general">
+                     <div class="flex justify-content-center gap-1">
+                        Clave
+                        <p-sortIcon field="Clave" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="Descripcion" class="text-center th-general">
+                     <div class="flex justify-content-center gap-1">
+                        Nombre
+                        <p-sortIcon field="Descripcion" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="ventaactual" class="text-center th-general">
+                     <div class="flex justify-content-center gap-1">
+                        Objetivo Minimo
+                        <p-sortIcon field="ventaactual" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="ventaanterior" class="text-center th-general">
+                     <div class="flex justify-content-center gap-1">
+                        Objetivo Deseado
+                        <p-sortIcon field="ventaanterior" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="Crecimiento" class="text-center th-general">
+                     <div class="flex justify-content-center gap-1">
+                        Resultado
+                        <p-sortIcon field="Crecimiento" />
+                     </div>
+                  </th>
+                  @if (data.title == 'Venta') {
+                     <th pSortableColumn="Crecimiento" class="text-center th-general">
+                        <div class="flex justify-content-center gap-1">
+                           Cobertura
+                           <p-sortIcon field="Crecimiento" />
+                        </div>
+                     </th>
+                  }
+                  <th pSortableColumn="Participacion" class="text-center th-general">
+                     <div class="flex justify-content-center gap-1">
+                        Calificación
+                        <p-sortIcon field="Participacion" />
+                     </div>
+                  </th>
+               </tr>
+            </ng-template>
+
+            <ng-template #body let-item>
+               <tr (click)="onRowClick(item)" [style.cursor]="'pointer'">
+                  <td class="text-center td-general">{{ item.cve_sucursal }}</td>
+                  <td class="text-center td-general">{{ item.nombre }}</td>
+                  <td class="text-center td-general" style="text-wrap-mode: nowrap;">
+                     @if (data.title == 'Venta') {
+                        {{ item.objetivo_minimo | currency:'MXN':'symbol-narrow':'1.0-2' }}
+                     } @else {
+                        {{ item.objetivo_minimo | number:'1.0-2' }}
+                     }
+                  </td>
+                  <td class="text-center td-general" style="text-wrap-mode: nowrap;">
+                     @if (data.title == 'Venta') {
+                        {{ item.objetivo_deseado | currency:'MXN':'symbol-narrow':'1.0-2' }}
+                     } @else {
+                        {{ item.objetivo_deseado | number:'1.0-2' }}
+                     }
+                  </td>
+                  <td class="text-center td-general" style="text-wrap-mode: nowrap;"> 
+                     @if (data.title == 'Venta') {
+                        {{ item.resultado | currency:'MXN':'symbol-narrow':'1.0-2' }}
+                     } @else {
+                        {{ item.resultado | number:'1.0-2' }}
+                     }
+                  </td>
+                  @if (data.title == 'Venta') {
+                     <td class="text-center td-general">{{ item.cobertura | number: '1.0-2' }}</td>
+                  }
+                  <td class="text-center td-general">{{ item.calificacion | number: '1.0-2' }}</td>
+               </tr>
+            </ng-template>
+
+            <ng-template #emptymessage>
+               <tr>
+                  <td [attr.colspan]="cols">
+                     <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                        <img src="undraw/warning.svg" height="150" alt="warning" />
+                        <div class="alert-table">{{varb.message}}</div>
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+
+            <ng-template pTemplate="loadingbody">
+               <tr>
+                  <td [attr.colspan]="cols">
+                     <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                        <div class="loader-container">
+                           <div class="loader"></div>
+                           <div class="loader-text">Cargando datos, por favor espere...</div>
+                        </div> 
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+         </p-table>
+      </mat-card-content>
+   </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flex gap-2">
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" [rounded]="true" />
+</mat-dialog-actions>

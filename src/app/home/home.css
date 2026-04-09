@@ -1,0 +1,366 @@
+h5 {
+   color: var(--color-primary);
+   text-transform: uppercase;
+}
+
+.container {
+   position: relative;
+   width: 100%;
+}
+
+/* =============== Navigation ================ */
+.navigation {
+   position: fixed;
+   overflow-y: auto;
+   overflow-x: hidden;
+   -ms-overflow-style: none;  /* IE y Edge */
+   scrollbar-width: none;     /* Firefox */
+   width: 270px;
+   height: 100%;
+   background: var(--color-primary);
+   border-left: 10px solid var(--color-primary);
+   border-top-right-radius: 20px;
+   border-bottom-right-radius: 20px;
+   transition: var(--transition);
+}
+
+.navigation.active {
+   width: 80px;
+}
+
+.navigation ul {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+}
+
+.navigation ul li {
+   position: relative;
+   width: 100%;
+   list-style: none;
+   border-top-left-radius: 30px;
+   border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:hover, .navigation ul li.hovered {
+   background-color: var(--background);
+}
+
+.navigation ul li:nth-child(1) {
+   margin-bottom: 1px;
+   pointer-events: none;
+}
+
+.navigation ul li a {
+   position: relative;
+   display: block;
+   width: 100%;
+   display: flex;
+   text-decoration: none;
+   color: var(--color-white);
+}
+
+.navigation ul li:hover a, .navigation ul li.hovered a {
+   color: var(--color-primary);
+}
+
+.navigation ul li a .icon {
+   position: relative;
+   display: block;
+   min-width: 60px;
+   height: 60px;
+   line-height: 60px;
+   text-align: center;
+}
+
+.navigation ul li a .icon i {
+   font-size: 1.75rem;
+}
+
+.navigation ul li a .logo {
+   position: relative;
+   display: block;
+   text-align: center;
+   min-width: 60px;
+   height: 60px;
+   line-height: 90px;
+}
+
+.navigation ul li a .logo img {
+   height: 40px;
+   width: 40px;
+}
+
+.navigation ul li a .title {
+   position: relative;
+   display: block;
+   padding: 0 10px;
+   height: 60px;
+   line-height: 60px;
+   text-align: start;
+   white-space: nowrap;
+}
+
+/* --------- curve outside ---------- */
+.navigation ul li:hover a::before, .navigation ul li.hovered a::before {
+   content: "";
+   position: absolute;
+   right: 0;
+   top: -50px;
+   width: 50px;
+   height: 50px;
+   background-color: transparent;
+   border-radius: 50%;
+   box-shadow: 35px 35px 0 10px var(--background);
+   pointer-events: none;
+}
+
+.navigation ul li:hover a::after, .navigation ul li.hovered a::after {
+   content: "";
+   position: absolute;
+   right: 0;
+   bottom: -50px;
+   width: 50px;
+   height: 50px;
+   background-color: transparent;
+   border-radius: 50%;
+   box-shadow: 35px -35px 0 10px var(--background);
+   pointer-events: none;
+}
+
+.navigation ul li a .arrow {
+   position: absolute;
+   height: 60px;
+   line-height: 60px;
+   right: 20px;
+   font-size: 0.8rem;
+}
+
+/* Ocultar submenú por defecto */
+.submenu {
+   cursor: pointer;
+   max-height: 0;
+   overflow: hidden;
+   margin-left: 10px;
+   border-radius: 20px 0 0 20px;
+}
+
+/* Mostrar submenú */
+.submenu.show {
+   max-height: 500px; /* Suficiente para los items */
+   position: relative !important; /* Para que empuje a los demás li hacia abajo */
+}
+
+/* Ajuste para los links del submenú */
+.submenu li a {
+   height: 45px !important;
+   line-height: 45px !important;
+}
+
+.submenu li a .icon {
+   min-width: 40px !important;
+   height: 45px !important;
+   line-height: 45px !important;
+}
+
+.submenu li a .title {
+   height: 45px !important;
+   line-height: 45px !important;
+}
+
+/* Evitar que el efecto curve-outside se aplique mal en submenús */
+.submenu li:hover {
+   border-left: 1px solid #ff5000;
+   color: var(--color-primary-black);
+}
+
+/* ===================== Main ===================== */
+.main {
+   position: absolute;
+   width: calc(100% - 270px);
+   height: 100vh;
+   left: 270px;
+   min-height: 100vh;
+   background: var(--background);
+   transition: var(--transition);
+   overflow: hidden;
+}
+
+.main.active {
+   width: calc(100% - 80px);
+   left: 80px;
+}
+
+
+.topbar {
+   position: sticky; /* o fixed si prefieres que esté 100% fija */
+   width: 100%;
+   height: 60px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0 10px;
+   border-bottom: 1px solid #ddd;
+   top: 0;
+   z-index: 10;
+}
+
+.toggle {
+   position: relative;
+   width: 60px;
+   height: 60px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 2.5rem;
+   cursor: pointer;
+   color: var(--color-primary);
+}
+
+.toggle:hover {
+   transform: rotate(10deg) scale(1.05);
+}
+
+.search {
+   position: relative;
+   width: 400px;
+   margin: 0 10px;
+   text-align: center;
+}
+
+.search label {
+   width: 100%;
+   font-size: 18px;
+   color: var(--color-primary);
+   font-weight: 600;
+}
+
+.user {
+   position: relative;
+   width: 35px;
+   height: 35px; 
+   border-radius: 50%;  
+   overflow: hidden;
+   background: #9bbafc;
+}
+
+.user img {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.breadcrumb {
+   display: flex;
+   justify-content: center;
+   cursor: pointer;
+   width: 100%;
+}
+
+.breadcrumb h2 {
+   color: var(--color-primary);
+   letter-spacing: 1px;
+}
+
+/* ====================== Responsive Design ========================== */
+@media (max-width: 991px) {
+   .bi-chevron-down {
+      color: var(--color-white);
+   }
+
+   .toggle i {
+      color: var(--color-white);
+   }
+
+   .breadcrumb h2 {
+      color: var(--color-white);
+   }
+   
+   .topbar {
+      background: var(--color-primary);
+   }
+
+   /* --------- curve outside ---------- */
+   .navigation ul li:hover a::before, .navigation ul li.hovered a::before {
+      border-radius: 10%;
+   }
+
+   .navigation ul li:hover a::after, .navigation ul li.hovered a::after {
+      border-radius: 10%;
+   }
+
+   .navigation {
+      left: 0;
+      transform: translateX(-100%); 
+      width: 270px;
+      z-index: 1000;
+      will-change: transform; /* Optimizaciones de rendimiento */
+      transition: transform 0.3s ease-out; /* Animación suave */
+   }
+
+   .navigation.active {
+      width: 270px;
+      left: 0;
+      transform: translateX(0); 
+      box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+   }
+
+   .main {
+      width: 100%;
+      left: 0;
+      position: relative;
+   }
+
+   .main.active {
+      left: 0 !important;
+      width: 100% !important;
+      margin-left: 0 !important;
+      transform: none !important;
+      filter: brightness(0.6); /* Opcional: Oscurecer el fondo para que resalte el menú */
+   }
+
+   .main.active .content {
+      pointer-events: none; /* Deshabilita todos los eventos de ratón (clics, hover, etc.) */ 
+      z-index: 1;  /* Asegúrate de que el contenido no flote sobre el menú si tiene z-index alto */
+   }
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 480px) {
+   .navigation ul li:nth-child(4), li:nth-child(5), li:nth-child(6),  li:nth-child(7), li:nth-child(9), li:nth-child(11){
+      display: none;
+   }
+
+   .user {
+      min-width: 35px;
+   }
+   
+   .navigation {
+      width: 100%;
+      left: -100%;
+      z-index: 1000;
+   }
+   
+   .navigation.active {
+      width: 100%;
+      left: 0;
+   }
+    h2 {
+      font-size: 1rem;
+   }
+   .toggle {
+      z-index: 10001;
+   }
+
+   .main.active .toggle {
+      color: #fff;
+      position: fixed;
+      right: 0;
+      left: initial;
+   }
+}

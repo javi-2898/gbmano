@@ -1,0 +1,20 @@
+<h2 mat-dialog-title><i class="pi pi-shop text-xl"></i> Sucursal</h2>
+
+<mat-dialog-content>
+   <p-select [options]="varb.sucursales" [(ngModel)]="varb.selectSuc" optionLabel="nombre" [filter]="true" filterBy="nombre" [showClear]="true" placeholder="Seleccionar Sucursal" class="w-full md:w-56" (onChange)="Select_Sucursal()">
+      <ng-template #selectedItem let-selectedOption>
+         <div class="flex items-center gap-2">
+            <div>{{ selectedOption.nombre }}</div>
+         </div>
+      </ng-template>
+      <ng-template let-country #item>
+         <div class="flex items-center gap-2">
+            <div>{{ country.nombre }}</div>
+         </div>
+      </ng-template>
+   </p-select>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" variant="outlined" [rounded]="true" />
+</mat-dialog-actions>

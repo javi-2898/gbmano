@@ -1,0 +1,219 @@
+<div class="padding-2">
+   <div class="col-12 padding flex flex-wrap">
+      <div class="col-4 padding">
+         <span style="font-size: 1.5rem;">Crear Encuesta</span> 
+      </div>
+
+      <div class="col-8 padding flex justify-content-end gap-1">
+         <a href="docs/Ejecucion.xlsx" target="_blank" rel="noopener noreferrer" icon="bi bi-cloud-arrow-down-fill" severity="info" size="small" rounded="true" pButton download>
+            <span pButtonLabel>Descargar Ejecución</span>
+         </a>
+
+         <a href="docs/Inocuidad.xlsx" target="_blank" rel="noopener noreferrer" icon="bi bi-cloud-arrow-down-fill" severity="warn" size="small" rounded="true" pButton download>
+            <span pButtonLabel>Descargar Inocuidad</span>
+         </a>
+      </div>
+   </div>
+</div>
+
+<mat-dialog-content>
+   <mat-card appearance="outlined" class="mb-2" style="background: #ffffff;">
+      <mat-card-content>
+         <div class="col-12 padding flex flex-wrap">
+            <div class="col-4 padding-3">
+               <span class="font-bold">Tipo</span>
+               <p-select [options]="varb.type" [(ngModel)]="varb.selectTipo" optionLabel="tipo" placeholder="Selecccionar" class="w-full" (onChange)="Delete_Table_Excel()" />
+            </div>
+
+            <div class="col-4 padding-3">
+               <span class="font-bold">Evaluación</span>
+               <input type="text" pInputText [(ngModel)]="varb.evaluacion" class="w-full" (input)="varb.evaluacion = $any($event.target).value.toUpperCase()" />
+            </div>
+
+            <div class="col-4 padding-3">
+               <span class="font-bold">Sucursales</span>
+               <input type="text" pInputText [(ngModel)]="varb.sucursalesText" class="w-full" />
+               <span class="text-color-secondary">Ejemplo: 8, 10, 61 </span>
+            </div>
+         </div>
+      </mat-card-content>
+   </mat-card>
+
+   <mat-card appearance="outlined" style="background: #ffffff;">
+      <mat-card-content>
+         <p-table #dt size="small" scrollHeight="400px" dataKey="Numero"
+            [value]="varb.encuesta"
+            [loading]="varb.loading"
+            [expandedRowKeys]="varb.expandedRows"
+            [globalFilterFields]="['Area', 'Apartado', 'Pregunta']"
+            [customSort]="true"
+            [scrollable]="true"
+            (sortFunction)="fun.customSort($event)"
+         >
+            <ng-template #caption>
+               <div class="col-12 padding flex flex-wrap">
+                  <div class="col-8">
+                     <input #fileInput id="files" style="display: none;" type="file" accept=".xlsx, .xls" (change)="File_View($event)" (change)="Export_Excel($event)" [disabled]="varb.view" />
+                     <label for="files" id="file-label" (change)="fileInput.click()">{{ varb.fileName || "Seleccionar excel" }}</label>
+                  </div>
+
+                  <div class="col-4 padding">
+                     <div class="flex">   
+                        <p-iconfield iconPosition="left" class="ml-auto">
+                           <p-inputicon>
+                              <i class="pi pi-search"></i>
+                           </p-inputicon>
+                           <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                        </p-iconfield>
+                     </div>
+                  </div>
+               </div>
+            </ng-template>
+
+            <ng-template #header>
+               <tr>
+                  <th></th>
+                  <th pSortableColumn="Area">
+                     <div class="flex justify-content-center gap-1">
+                        Area
+                        <p-sortIcon field="Area" />
+                     </div>
+                  </th>
+                  <th *ngIf="varb.selectTipo?.value == 'EJECUCION' ? false : true" pSortableColumn="Apartado">
+                     <div class="flex justify-content-center gap-1">
+                        Apartado
+                        <p-sortIcon field="Apartado" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="Pregunta">
+                     <div class="flex justify-content-center gap-1">
+                        Pregunta
+                        <p-sortIcon field="Pregunta" />
+                     </div>
+                  </th>
+                  <th *ngIf="varb.selectTipo?.value == 'EJECUCION' ? true : false">
+                     <div class="flex justify-content-center gap-1">
+                        Imagen
+                     </div>
+                  </th>
+               </tr>
+            </ng-template>
+
+            <ng-template #body let-item let-rowIndex="rowIndex" let-expanded="expanded">
+               <tr>
+                  <td class="text-center">
+                     <p-button type="button" pRipple [pRowToggler]="item" [text]="true" [rounded]="true" size="small" severity="secondary" 
+                     [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"/>
+                  </td>
+                  <td class="text-center">{{ item.Area }}</td>
+                  <td *ngIf="varb.selectTipo?.value == 'EJECUCION' ? false : true" class="text-center">{{ item.Apartado }}</td>
+                  <td class="text-center">{{ item.NoPregunta }}</td>
+                  <td *ngIf="varb.selectTipo?.value == 'EJECUCION' ? true : false" class="text-center">
+                     <input #fileInput type="file" accept="image/*" style="display: none;" (change)="onImageSelected($event, item, rowIndex)" />
+                     <p-button type="button" icon="pi pi-upload" [label]="item.ArchivoNombre ? 'Cambiar' : 'Subir'" (click)="fileInput.click()" [rounded]="true" severity="secondary" size="small" />
+                     <small *ngIf="item.ArchivoNombre" class="block mt-1">{{ item.ArchivoNombre }}</small>
+                  </td>
+               </tr>
+            </ng-template>
+
+            <ng-template #emptymessage>
+               <tr>
+                  <td colspan="5">
+                     <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                        <img src="undraw/warning.svg" height="150" alt="warning" />
+                        <div class="alert-table">{{varb.message_2}}</div>
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+
+            <ng-template pTemplate="loadingbody">
+               <tr>
+                  <td colspan="5">
+                     <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                        <div class="loader-container">
+                           <div class="loader"></div>
+                           <div class="loader-text">Cargando datos, por favor espere...</div>
+                        </div> 
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+
+            <!-- =================================== EXPANDED ROW =================================== -->
+            <ng-template #expandedrow let-param>
+               <tr style="background-color: #f8fafc;">
+                  <td colspan="7">
+                     <p-table #tbl 
+                        stripedRows
+                        showGridlines 
+                        dataKey="Numero"
+                        scrollHeight="600px"
+                        [loading]="varb.loading_2"
+                        [value]="param.Preguntas"
+                        [scrollable]="true"
+                        [globalFilterFields]="['Seccion', 'Pregunta']"
+                        [customSort]="true"
+                        (sortFunction)="fun.customSort($event)"
+                     >
+                        <ng-template #header>
+                           <tr>
+                              <th *ngIf="varb.selectTipo?.value == 'EJECUCION' ? false : true" pSortableColumn="Seccion">
+                                 <div class="flex justify-content-center gap-1">
+                                    Sección
+                                    <p-sortIcon field="Seccion" />
+                                 </div>
+                              </th>
+                              <th pSortableColumn="Pregunta">
+                                 <div class="flex justify-content-center gap-1">
+                                    Preguntas
+                                    <p-sortIcon field="Pregunta" />
+                                 </div>
+                              </th>
+                           </tr>
+                        </ng-template>
+
+                        <ng-template #body let-item>
+                           <tr>
+                              <td *ngIf="varb.selectTipo?.value == 'EJECUCION' ? false : true" class="text-center">{{ item.Seccion }}</td>
+                              <td class="text-center">{{ item.Pregunta }}</td>
+                           </tr>
+                        </ng-template>
+
+                        <ng-template #emptymessage>
+                           <tr>
+                              <td colspan="3">
+                                 <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                                    <img src="undraw/warning.svg" height="150" alt="warning" />
+                                    <div class="alert-table">{{varb.message_2}}</div>
+                                 </div>
+                              </td>
+                           </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="loadingbody">
+                           <tr>
+                              <td colspan="3">
+                                 <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                                    <div class="loader-container">
+                                       <div class="loader"></div>
+                                       <div class="loader-text">Cargando datos, por favor espere...</div>
+                                    </div> 
+                                 </div>
+                              </td>
+                           </tr>
+                        </ng-template>
+                     </p-table>
+                  </td>
+               </tr>
+            </ng-template>
+         </p-table>
+   </mat-card-content>
+   </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flex gap-2">
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" variant="outlined" [rounded]="true" />
+   <p-button matButton label="Borrar" icon="bi bi-trash3" severity="success" variant="outlined" [rounded]="true" (onClick)="Delete_Table_Excel()" />
+   <p-button matButton label="Guardar" icon="bi bi-save" severity="info" variant="outlined" [rounded]="true" [loading]="varb.loading_3" (onClick)="Create_Evaluacion_Encuesta()" />
+</mat-dialog-actions>

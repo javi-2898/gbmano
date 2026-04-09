@@ -1,0 +1,287 @@
+<div class="header-title">
+   <h1>Dashboard Sucursal</h1>
+</div>
+
+<!-- =================================== TABLA =================================== -->
+<mat-card class="mt-3 sm:mt-3" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <div class="flex flex-wrap align-items-center justify-content-center">
+         <div class="flex flex-wrap col-12 sm:col-12 md:col-12 lg:col-12 xl:col-3">
+            <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-12">
+               <p-select [options]="varb.meses" [(ngModel)]="varb.selectMes" placeholder="Mes" optionLabel="mes" class="w-full" (onChange)="Cargar_Fun_Read()" />
+            </div>
+
+            <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-12">
+               <p-select [options]="fun.year" [(ngModel)]="varb.selectYear" optionLabel="Year" placeholder="Año" class="w-full" (onChange)="Cargar_Fun_Read()" />
+            </div>
+
+            <div class="col-12">
+               <div class="circle">
+                  <p-skeleton *ngIf="varb.loading" shape="circle" size="6rem" />
+
+                  <div *ngIf="!varb.loading" class="circle-item {{ fun.getClase(varb.totalPuntos, varb.totalPonderacion, 'circle') }}">
+                     {{varb.totalPuntos | number : '1.0-2'}}
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-12 sm:col-12 md-12 lg:col-12 xl:col-9">
+            <p-skeleton *ngIf="varb.loading" width="100%" height="15rem" />
+
+            <p-table *ngIf="!varb.loading" [value]="varb.table" size="small">
+               <ng-template #header>
+                  <tr>
+                     <th></th>
+                     <th class="th-kpi">KPI</th>
+                     <th class="th-general">Objetivo Mínimo</th>
+                     <th class="th-general">Objetivo Deseado</th>
+                     <th class="th-general">Resultado</th>
+                     <th class="th-general">Calificación</th>
+                     <th class="th-general">Ponderación</th>
+                     <th class="th-general">Puntos</th>
+                  </tr>
+               </ng-template>
+
+               <ng-template #body let-item let-i="rowIndex">
+                  <tr (click)="i !== 1 ? onRowClick(item.Indicador) : null" [style.cursor]="i !== 1 ? 'pointer' : 'not-allowed'" 
+                  class="{{ varb.view != false ? fun.getClaseBackground(item.Puntos, item.Ponderacion) : ''}}">
+                  
+                     <td class="td-general">{{ fun.Diccionario(item.Indicador) }}</td>
+                     <td class="td-general">
+                        @if (varb.view == false) {
+                           <div class="progress-container">
+                              <progress class="progress-bar {{ fun.getClase(item.Puntos, item.Ponderacion, 'progress') }}" value="{{ item.Puntos }}" max="{{ item.Ponderacion }}"></progress>
+                              <span class="progress-text" style="width: 100%;">
+                                 {{ (item.Puntos / item.Ponderacion * 100) | number:'1.0-2' }} %
+                              </span>
+                           </div>
+                        } @else {
+                          <div class="font-bold"> {{ (item.Puntos / item.Ponderacion * 100) | number:'1.0-2' }}%  </div>
+                        }
+                     </td>
+                     <td class="td-general" style="text-wrap-mode: nowrap;"> {{ (i == 0) ? '$' : '' }}{{ item.RangoObjetivoInicial | number:'1.0-2' }} </td>
+                     <td class="td-general" style="text-wrap-mode: nowrap;"> {{ (i == 0) ? '$' : '' }}{{ item.RangoObjetivoFinal | number:'1.0-2' }} </td>
+                     <td class="td-general" style="text-wrap-mode: nowrap;"> {{ (i == 0) ? '$' : '' }}{{ item.Resultado | number:'1.0-2' }} </td>
+                     <td class="td-general"> {{ item.Calificacion | number : '1.0-2' }} </td>
+                     <td class="td-general"> {{ item.Ponderacion | number : '1.0-2' }} </td>
+                     <td class="td-general"> {{ item.Puntos | number : '1.0-2' }} </td>
+                  </tr>
+
+               </ng-template>
+
+               <ng-template #emptymessage>
+                  <tr>
+                     <td colspan="8" class="text-center">
+                        <img src="undraw/warning.svg" height="150" alt="warning" >
+                        <div class="alert-table">{{ varb.message }}</div>
+                     </td>
+                  </tr>
+               </ng-template>
+
+               <ng-template #footer>
+                  <tr>
+                     <td colspan="7"></td>
+                     <td class="td-total">{{ varb.totalPuntos | number : '1.0-2' }}</td>
+                  </tr>
+               </ng-template>
+            </p-table>
+         </div>
+      </div>
+   </mat-card-content>
+</mat-card>
+
+<!-- =================================== VENTA / OBJETIVO/ COBERTURA / CRECIMIENTO =================================== -->
+<mat-card class="mt-3 sm:mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <p-skeleton *ngIf="varb.loading" width="100%" height="5rem" />
+
+      <div *ngIf="!varb.loading" class="flex flex-wrap">
+         <div class="col-6 sm:col-4 md:col-4 lg:col-2 xl:col-2">
+            <div class="flex flex-wrap">
+               <div class="col-12 flex justify-content-center">
+                  <h2 class="title">Venta {{varb.selectYear.Year}}</h2>
+               </div>
+
+               <div class="col-12 flex justify-content-center">
+                  <div class="text-lg">$ {{ varb.ventaActual | number:'1.0-2' }}</div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-6 sm:col-4 md:col-4 lg:col-2 xl:col-2">
+            <div class="flex flex-column">
+               <div class="col-12 flex justify-content-center">
+                  <h2 class="title">Venta {{varb.selectYear.Year - 1}}</h2>
+               </div>
+
+               <div class="col-12 flex justify-content-center">
+                  <div class="text-lg">$ {{ this.varb.ventaAnterior | number:'1.0-2' }}</div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-6 sm:col-4 md:col-4 lg:col-2 xl:col-2">
+            <div class="flex flex-column">
+               <div class="col-12 flex justify-content-center">
+                  <h2 class="title">Objetivo</h2>
+               </div>
+
+               <div class="col-12 flex justify-content-center">
+                  <div class="text-lg">$ {{ this.varb.objetivo | number:'1.0-2' }}</div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-6 sm:col-4 md:col-4 lg:col-2 xl:col-2">
+            <div class="flex flex-column">
+               <div class="col-12 flex justify-content-center">
+                  <h2 class="title">Cobertura</h2>
+               </div>
+               
+               <div class="col-12 flex flex-wrap justify-content-center align-items-center">
+                  <div class="progress-container">
+                     <progress class="progress-bar {{ fun.getClase(varb.ventaActual, varb.objetivo, 'progress') }}" [value]="varb.cobertura" max="100"></progress>
+                     <span class="progress-text">
+                        {{ varb.cobertura > 100 ? 100 : varb.cobertura | number:'1.0-2' }} %
+                     </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-6 sm:col-4 md:col-4 lg:col-2 xl:col-2">
+            <div class="flex flex-column">
+               <div class="col-12 flex justify-content-center">
+                  <h2 class="title">Crecimiento</h2>
+               </div>
+
+               <div class="col-12 flex justify-content-center">
+                  <div class="text-lg">{{ varb.crecimiento| number: '1.0-2' }} %</div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-6 sm:col-4 md:col-4 lg:col-2 xl:col-2">
+            <div class="flex flex-column">
+               <div class="col-12 flex justify-content-center">
+                  <h2 class="title">Venta YTD vs AA</h2>
+               </div>
+
+               <div class="col-12 flex justify-content-center">
+                  @if (varb.loading_5) {
+                     <p-skeleton class="mt-2" width="100%" height="1.5rem" />
+                  } @else {
+                     <div class="text-lg"> $ {{ varb.ventaYTD | abbreviate:'M':2 }} </div>
+                     <span class="{{ varb.crecimientoYTD < 0 ? 'text-red-600' : 'text-green-600' }}">
+                        <i class="bi {{ varb.crecimientoYTD < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }}"></i> {{ varb.crecimientoYTD | number: '1.0-2' }}%
+                     </span>
+                  }
+               </div>
+            </div>
+         </div>
+      </div>
+   </mat-card-content>
+</mat-card>
+
+<div class="flex flex-wrap">
+   <!-- =================================== GRAFICA =================================== -->
+   <div class="col-12 sm:col-12 md:col-12 lg:col-8 xl:col-8 padding-left">
+      <mat-card class="mt-2 sm:mt-3" appearance="outlined" style="background: #ffffff;">
+         <mat-card-content>
+            <h3>Ventas de los ultimos 6 meses (año actual vs año anterior)</h3>
+
+            <div *ngIf="varb.loading_2" class="mt-3">
+               <p-skeleton width="100%" height="12rem" />
+            </div>
+
+            <div *ngIf="!varb.loading_2" class="mt-3" id="chart"></div>
+         </mat-card-content>  
+      </mat-card>
+   </div>
+
+   <div class="col-12 sm:col-12 md:col-12 lg:col-4 xl:col-4 padding-right">
+      <!-- =================================== DÍAS DE INVENTARIO =================================== -->
+      <mat-card class="mt-0 sm:mt-3" appearance="outlined" style="background: #ffffff; cursor: pointer;" (click)="Open_Dialog_Dias_Invetario_Departamento()">
+         <mat-card-content>
+            <p-skeleton *ngIf="varb.loading_6" class="mt-2" width="100%" height="1.5rem" />
+
+            <h3 *ngIf="!varb.loading_6" class="title text-spacing">Días de Inventario: {{ varb.DDI | number: '1.0-2' }} </h3>
+         </mat-card-content>  
+      </mat-card>
+
+      <!-- =================================== TICKETS =================================== -->
+      <mat-card class="mt-3" appearance="outlined" style="background: #ffffff;">
+         <mat-card-content>
+            <h2 class="title text-spacing">Tickets</h2>
+            
+            <p-skeleton *ngIf="varb.loading_4" class="mt-2" width="100%" height="4rem" />
+
+            <div *ngIf="!varb.loading_4" class="flex flex-wrap">
+               <div class="col-6 sm:col-4">
+                  <div class="flex flex-column align-items-center">
+                     <h3>Monto Promedio de Ticket</h3>
+                     <span>
+                        $ {{ varb.tickets?.Promedio | number: '1.0-2' }} 
+                        <span class="{{varb.tickets?.prominc < 0 ? 'text-red-600' : 'text-green-600'}}">
+                           <i class="bi {{varb.tickets?.prominc < 0 ? 'bi-arrow-down' : 'bi-arrow-up'}}"></i> {{varb.tickets?.prominc | number: '1.0-2'}}%
+                        </span>
+                     </span>
+                  </div>
+               </div>
+               
+               <div class="col-6 sm:col-4">
+                  <div class="flex flex-column align-items-center">
+                     <h3>Promedio Visitas al Día</h3>
+                     <span>
+                        {{varb.tickets?.Promedio_visitas | number: '1.0-0'}} 
+                        <span class="{{ varb.tickets?.promvisitasinc < 0 ? 'text-red-600' : 'text-green-600' }}">
+                           <i class="bi {{ varb.tickets?.promvisitasinc < 0 ? 'bi-arrow-down' : 'bi-arrow-up' }}"></i> {{ varb.tickets?.promvisitasinc | number: '1.0-2' }}%
+                        </span>
+                     </span>
+                  </div>
+               </div>
+
+               <div class="col-6 sm:col-4">
+                  <div class="flex flex-column align-items-center">
+                     <h3>Visitas</h3>
+                     <span>{{varb.tickets?.Tickets | number: '1.0-2'}}</span>
+                  </div>
+               </div>
+            </div>
+         </mat-card-content>  
+      </mat-card>
+
+      <!-- =================================== PRECIO APLICAR =================================== -->
+      <mat-card class="mt-3" appearance="outlined" style="background: #ffffff; cursor: pointer;" (click)="Open_Dialog_Detalle_Precio()">
+         <mat-card-content>
+            <h2 class="title text-spacing">Precio por Aplicar</h2>
+
+            <p-skeleton *ngIf="varb.loading_3" class="mt-2" width="100%" height="4rem" />
+
+            <div *ngIf="!varb.loading_3" class="flex flex-wrap">
+               <div class="col-4 sm:col-4 md:col-4 lg:col-4 xl:col-4">
+                  <div class="flex flex-column align-items-center">
+                     <h3>SKUS</h3>
+                     <span>{{varb.precioAplicar?.SKUS}}</span>
+                  </div>
+               </div>
+
+               <div class="col-4 sm:col-4 md:col-4 lg:col-4 xl:col-4">
+                  <div class="flex flex-column align-items-center">
+                     <h3>DESDE</h3>
+                     <span>{{varb.precioAplicar?.FechaMin}}</span>
+                  </div>
+               </div>
+               
+               <div class="col-4 sm:col-4 md:col-4 lg:col-4 xl:col-4">
+                  <div class="flex flex-column align-items-center">
+                     <h3>Hasta</h3>
+                     <span>{{varb.precioAplicar?.FechaMax}}</span>
+                  </div>
+               </div>
+            </div>
+         </mat-card-content>  
+      </mat-card>
+   </div>
+</div>

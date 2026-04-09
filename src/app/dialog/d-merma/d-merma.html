@@ -1,0 +1,87 @@
+<h2 mat-dialog-title> <span class="font-bold">{{ fun.Diccionario(data.title) | uppercase}}</span> {{ fun.Diccionario(data.title_sub) | uppercase}} </h2>
+
+<mat-dialog-content class="dialogo-sin-padding"> 
+   <mat-card appearance="outlined" style="background: #ffffff;">
+      <mat-card-content>
+         <div class="col-12 flex flex-wrap">
+            <p-iconfield iconPosition="left" class="ml-auto">
+               <p-inputicon>
+                  <i class="pi pi-search"></i>
+               </p-inputicon>
+               <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+            </p-iconfield>
+         </div>
+
+         <p-table #dt size="small"
+            showGridlines
+            [value]="varb.table"
+            [loading]="varb.loading"
+            [scrollable]="true"
+            [customSort]="true"
+            scrollHeight="500px"
+            [globalFilterFields]="['cve_documento', 'cve_movimiento', 'cve_folio', 'cve_producto', 'cve_presentacion',
+            'descripcion', 'observaciones', 'fecha', 'cantidad', 'costoTotal']"
+            (sortFunction)="fun.customSort($event)"
+         >
+            <!-- =================================== MERMA ABARROTES / MERMA PERECEDERO =================================== -->
+            <ng-template #header>
+               <tr>
+                  <th class="text-center th-general">Clave Doc.</th>
+                  <th class="text-center th-general">Clave Mov.</th>
+                  <th class="text-center th-general">Folio</th>
+                  <th class="text-center th-general">Clave Prod.</th>
+                  <th class="text-center th-general">Clave Pres.</th>
+                  <th class="text-center th-general">Descripción</th>
+                  <th class="text-center th-general">Observaciones</th>
+                  <th class="text-center th-general">Fecha</th>
+                  <th class="text-center th-general">Cantidad</th>
+                  <th class="text-center th-general">Costo Total</th>
+               </tr>
+            </ng-template>
+
+            <ng-template #body let-item>
+               <tr>
+                  <td class="text-center td-general">{{ item.cve_documento }}</td>
+                  <td class="text-center td-general">{{ item.cve_movimiento }}</td>
+                  <td class="text-center td-general">{{ item.cve_folio }}</td>
+                  <td class="text-center td-general">{{ item.cve_producto }}</td>
+                  <td class="text-center td-general">{{ item.cve_presentacion }}</td>
+                  <td class="text-center td-general">{{ item.descripcion }}</td>
+                  <td class="text-center td-general">{{ item.observaciones }}</td>
+                  <td class="text-center td-general">{{ item.fecha }}</td>
+                  <td class="text-center td-general">{{ item.cantidad | number: '1.0-2' }}</td>
+                  <td class="text-center td-general" style="text-wrap-mode: nowrap;">$ {{ item.costoTotal | number: '1.0-2' }}</td>
+               </tr>
+            </ng-template>
+
+            <ng-template #emptymessage>
+               <tr>
+                  <td [attr.colspan]="cols">
+                     <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                        <img src="undraw/warning.svg" height="150" alt="warning" />
+                        <div class="alert-table">{{varb.message}}</div>
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+
+            <ng-template pTemplate="loadingbody">
+               <tr>
+                  <td [attr.colspan]="cols">
+                     <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                        <div class="loader-container">
+                           <div class="loader"></div>
+                           <div class="loader-text">Cargando datos, por favor espere...</div>
+                        </div> 
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+         </p-table>
+      </mat-card-content>
+   </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flex gap-2">
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" variant="outlined" [rounded]="true" />
+</mat-dialog-actions>

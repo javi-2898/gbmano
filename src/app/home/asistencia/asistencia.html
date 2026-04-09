@@ -1,0 +1,198 @@
+<div class="header-title">
+   <h1>Asistencia</h1>
+</div>
+
+<mat-card class="mt-3 sm:mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <div class="flex flex-wrap">
+         
+         <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-3">
+            <span class="font-bold">Sucursal</span>
+            <p-select optionLabel="nombre" filterBy="nombre" placeholder="Seleccionar" class="w-full"
+               [options]="varb.sucursales"
+               [(ngModel)]="varb.selectSuc"
+               [filter]="true"
+               [showClear]="true" 
+               [disabled]="(varb.user.cve_sucursal !== '99') ? true : false"
+               emptyMessage="Sin opciones disponibles."
+               emptyFilterMessage="No se encontraron resultados."
+            >
+               <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2">
+                     <div>{{ selectedOption.nombre }}</div>
+                  </div>
+               </ng-template>
+   
+               <ng-template let-suc #item>
+                  <div class="flex items-center gap-2">
+                     <div>{{ suc.nombre }}</div>
+                  </div>
+               </ng-template>
+            </p-select>
+
+            <p-message *ngIf="varb.alert" severity="error" variant="simple">
+               <div [innerHTML]="varb.message"></div>
+            </p-message>
+         </div>
+
+         <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-2">
+            <span class="font-bold">Fecha Inicio</span>
+            <input type="date" pInputText [(ngModel)]="varb.fecha" class="w-full" />
+         </div>
+
+         <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-2">
+            <span class="font-bold">Fecha Fin</span>
+            <input type="date" pInputText [(ngModel)]="varb.fechaFin" class="w-full" />
+         </div>
+
+         <div class="col-12 sm:col-6 md:col-6 lg:col-6 xl:col-2">
+            <p-button label="Buscar" class="flex mtm-3" icon="pi pi-search" severity="info" (onClick)="Read_Asistencia()" />
+         </div>
+
+         <div class="col-12 sm:col-6 md:col-12 lg:col-12 xl:col-3">
+            <div class="flex flex-wrap justify-content-end gap-3">
+               
+               <p-iconfield iconPosition="left" class="ml-auto mtm-3">
+                  <p-inputicon>
+                     <i class="pi pi-search"></i>
+                  </p-inputicon>
+                  <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+               </p-iconfield>
+
+            </div>
+         </div>
+         
+      </div>
+      
+      <p-table #dt stripedRows size="small"
+         [value]="varb.table"
+         [loading]="varb.loading"
+         [rows]="15"
+         [rowsPerPageOptions]="[15, 30, 50, 100]"
+         [globalFilterFields]="['cve_empleado', 'nombreLargo', 'depto', 'area', 'puesto', 'fecha', 'entrada_1', 'salida_1', 'entrada_2', 'salida_2']"
+         [paginator]="true"
+         [customSort]="true"
+         [showCurrentPageReport]="true"
+         (sortFunction)="fun.customSort($event)"
+         currentPageReportTemplate="Total: {totalRecords}"
+      >
+         <ng-template #header>
+            <tr>
+               <th pSortableColumn="cve_empleado">
+                  <div class="flex gap-1 th-general">
+                     Clave
+                     <p-sortIcon field="cve_empleado" />
+                  </div>
+               </th>
+               <th pSortableColumn="nombreLargo" class="text-center">
+                  <div class="flex gap-1 th-general">
+                     Nombre
+                     <p-sortIcon field="nombreLargo" />
+                  </div>
+               </th>
+               <th pSortableColumn="depto">
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Departamento
+                     <p-sortIcon field="depto" />
+                  </div>
+               </th>
+               <th pSortableColumn="area">
+                  <div class="flex gap-1 th-general">
+                     Área
+                     <p-sortIcon field="area" />
+                  </div>
+               </th>
+               <th pSortableColumn="puesto">
+                  <div class="flex gap-1 th-general">
+                     Puesto
+                     <p-sortIcon field="puesto" />
+                  </div>
+               </th>
+               <th pSortableColumn="fecha">
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Fecha
+                     <p-sortIcon field="fecha" />
+                  </div>
+               </th>
+               <th pSortableColumn="entrada_1">
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Entrada 1
+                     <p-sortIcon field="entrada_1" />
+                  </div>
+               </th>
+               <th pSortableColumn="salida_1" >
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Salida 1
+                     <p-sortIcon field="salida_1" />
+                  </div>
+               </th>
+               <th pSortableColumn="entrada_2">
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Entrada 2
+                     <p-sortIcon field="entrada_2" />
+                  </div>
+               </th>
+               <th pSortableColumn="salida_2">
+                  <div class="flex justify-content-center gap-1 th-general">
+                     Salida 2
+                     <p-sortIcon field="salida_2" />
+                  </div>
+               </th>
+               <th pSortableColumn="nom_sucursal_r" class="text-center">
+                  <div class="flex items-center gap-1 th-general">
+                     Sucursal Registro
+                     <p-sortIcon field="nom_sucursal_r" />
+                  </div>
+               </th>
+               <th pSortableColumn="Precio" class="text-center">
+                  <div class="flex items-center gap-1 th-general">
+                     Sucursal Corresponde
+                     <p-sortIcon field="Precio" />
+                  </div>
+               </th>
+            </tr>
+         </ng-template>
+
+         <ng-template #body let-item>
+            <tr>
+               <td class="td-general">{{ item.cve_empleado }}</td>
+               <td class="td-general">{{ item.nombreLargo }}</td>
+               <td class="td-general">{{ item.depto }}</td>
+               <td class="td-general">{{ item.area }}</td>
+               <td class="td-general">{{ item.puesto }}</td>
+               <td class="text-center td-general">{{ item.fecha }}</td>
+               <td class="text-center td-general {{ item.entrada_1 == null ? '' : 'bg-primary' }}">{{ item.entrada_1 }}</td>
+               <td class="text-center td-general {{ item.salida_1 == null ? '' : 'bg-primary' }}">{{ item.salida_1 }}</td>
+               <td class="text-center td-general {{ item.entrada_2 == null ? '' : 'bg-green' }}">{{ item.entrada_2 }}</td>
+               <td class="text-center td-general {{ item.salida_2 == null ? '' : 'bg-green' }}">{{ item.salida_2 }}</td>
+               <td class="text-center td-general">{{ item.nom_sucursal_r }}</td>
+               <td class="text-center td-general">{{ item.name_sucursal_c }}</td>
+            </tr>
+         </ng-template>
+
+         <ng-template #emptymessage>
+            <tr>
+               <td colspan="12">
+                  <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                     <img src="undraw/warning.svg" height="150" alt="warning" />
+                     <div class="alert-table">{{varb.message_2}}</div>
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template pTemplate="loadingbody">
+            <tr>
+               <td colspan="12">
+                  <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                     <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text">Cargando datos, por favor espere...</div>
+                     </div> 
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+      </p-table>
+   </mat-card-content>
+</mat-card>

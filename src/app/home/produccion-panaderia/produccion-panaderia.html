@@ -1,0 +1,241 @@
+<div class="header-title">
+   <h1>Producción Panadería</h1>
+</div>
+
+<mat-card class="mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <div class="flex flex-wrap">
+         <div class="col-12 flex flex-wrap">
+            <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-4">
+               <p-select optionLabel="nombre" filterBy="nombre" placeholder="Seleccionar Sucursal" class="w-full"
+                  [options]="varb.sucursales"
+                  [(ngModel)]="varb.selectSuc"
+                  [filter]="true"
+                  [showClear]="true" 
+                  [disabled]="(varb.user.cve_sucursal !== '99') ? true : false"
+                  emptyMessage="Sin opciones disponibles."
+                  emptyFilterMessage="No se encontraron resultados."
+               >
+                  <ng-template #selectedItem let-selectedOption>
+                     <div class="flex items-center gap-2">
+                        <div>{{ selectedOption.nombre }}</div>
+                     </div>
+                  </ng-template>
+      
+                  <ng-template let-suc #item>
+                     <div class="flex items-center gap-2">
+                        <div>{{ suc.nombre }}</div>
+                     </div>
+                  </ng-template>
+               </p-select>
+
+               <p-message *ngIf="varb.alert" severity="error" variant="simple">
+                  <div [innerHTML]="varb.message"></div>
+               </p-message>
+            </div>
+
+            <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-4">
+               <div class="flex flex-wrap gap-3">
+                  <input type="date" pInputText [(ngModel)]="varb.fecha" />
+                  <p-button label="Buscar" icon="pi pi-search" severity="info" (onClick)="Read_Reporte()" />
+               </div>
+            </div>
+
+            <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-4">
+               <div class="flex flex-wrap justify-content-end gap-3">
+                  
+                  <p-iconfield iconPosition="left" class="ml-auto">
+                     <p-inputicon>
+                        <i class="pi pi-search"></i>
+                     </p-inputicon>
+                     <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                  </p-iconfield>
+
+                  <p-button label="Exportar Excel" icon="pi pi-file-excel" severity="success" [disabled]="(varb.table.length === 0) ? true : false" (click)="exportExcel(dt)" />
+               </div>
+            </div>
+         </div>
+      </div>
+      
+      <p-table #dt size="small"
+         currentPageReportTemplate="Total: {totalRecords}"
+         [value]="varb.table"
+         [loading]="varb.loading"
+         [rows]="15"
+         [rowsPerPageOptions]="[15, 30, 50, 100]"
+         [globalFilterFields]="['cve_sucursal', 'cve_producto', 'cve_presentacion', 'Descripcion', 'Sugerido', 'Total', 'CapturaProduccion', 'Diferencia', 
+         'Costo', 'Precio', 'Margen', 'VentaUdes', 'VentaCosto', 'VentaMonto', 'Utilidad', 'ExistenciaInicial', 'ExistenciaFinal', 'Merma']"
+         [paginator]="true"
+         [customSort]="true"
+         [showCurrentPageReport]="true"
+         (sortFunction)="fun.customSort($event)"
+      >
+         <ng-template #header>
+            <tr>
+               <th pSortableColumn="cve_sucursal" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Suc
+                     <p-sortIcon field="cve_sucursal" />
+                  </div>
+               </th>
+               <th pSortableColumn="cve_producto" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Producto
+                     <p-sortIcon field="cve_producto" />
+                  </div>
+               </th>
+               <th pSortableColumn="cve_presentacion" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Pres
+                     <p-sortIcon field="cve_presentacion" />
+                  </div>
+               </th>
+               <th pSortableColumn="Descripcion">
+                  <div class="flex items-center gap-1">
+                     Descripción
+                     <p-sortIcon field="Descripcion" />
+                  </div>
+               </th>
+               <th pSortableColumn="ExistenciaInicial" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Exitencia Inicio
+                     <p-sortIcon field="ExistenciaInicial" />
+                  </div>
+               </th>
+               <th pSortableColumn="Sugerido" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Sugerido
+                     <p-sortIcon field="Sugerido" />
+                  </div>
+               </th>
+               <th pSortableColumn="Total" class="text-center" >
+                  <div class="flex items-center gap-1">
+                     Pz. a Producir
+                     <p-sortIcon field="Total" />
+                  </div>
+               </th>
+               <th pSortableColumn="CapturaProduccion" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Producción Capturada
+                     <p-sortIcon field="CapturaProduccion" />
+                  </div>
+               </th>
+               <th pSortableColumn="Diferencia" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Diferencia
+                     <p-sortIcon field="Diferencia" />
+                  </div>
+               </th>
+               <th pSortableColumn="Costo" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Costo Producción
+                     <p-sortIcon field="Costo" />
+                  </div>
+               </th>
+               <th pSortableColumn="Precio" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Precio Venta
+                     <p-sortIcon field="Precio" />
+                  </div>
+               </th>
+               <th pSortableColumn="Margen" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Margen
+                     <p-sortIcon field="Margen" />
+                  </div>
+               </th>
+               <th pSortableColumn="VentaUdes" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Ventas Udes
+                     <p-sortIcon field="VentaUdes" />
+                  </div>
+               </th>
+               <th pSortableColumn="VentaCosto" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Ventas CUC
+                     <p-sortIcon field="VentaCosto" />
+                  </div>
+               </th>
+               <th pSortableColumn="VentaMonto" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Ventas PP
+                     <p-sortIcon field="VentaMonto" />
+                  </div>
+               </th>
+               <th pSortableColumn="Utilidad" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Utilidad
+                     <p-sortIcon field="Utilidad" />
+                  </div>
+               </th>
+               <th pSortableColumn="ExistenciaFinal" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Existencia Final
+                     <p-sortIcon field="ExistenciaFinal" />
+                  </div>
+               </th>
+               <th pSortableColumn="Merma" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Merma
+                     <p-sortIcon field="Merma" />
+                  </div>
+               </th>
+               <th pSortableColumn="Reproceso" class="text-center">
+                  <div class="flex items-center gap-1">
+                     Reproceso
+                     <p-sortIcon field="Reproceso" />
+                  </div>
+               </th>
+            </tr>
+         </ng-template>
+
+         <ng-template #body let-item>
+            <tr>
+               <td class="text-center">{{ item.cve_sucursal }}</td>
+               <td class="text-center">{{ item.cve_producto }}</td>
+               <td class="text-center">{{ item.cve_presentacion }}</td>
+               <td>{{ item.Descripcion }}</td>
+               <td class="text-center">{{ item.ExistenciaInicial | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.Sugerido | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.Total | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.CapturaProduccion | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.Diferencia | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.Costo | number : '1.0-2' }}</td>
+               <td class="text-center">${{ item.Precio | number : '1.2-2' }}</td>
+               <td class="text-center">{{ item.Margen | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.VentaUdes | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.VentaCosto | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.VentaMonto | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.Utilidad | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.ExistenciaFinal | number : '1.0-2' }}</td>
+               <td class="text-center">{{ item.Merma | number : '1.0-2' }}</td>
+               <td class="text-center">{{item.Reproceso | number : '1.0-2'}}</td>
+            </tr>
+         </ng-template>
+
+         <ng-template #emptymessage>
+            <tr>
+               <td colspan="18">
+                  <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                     <img src="undraw/warning.svg" height="150" alt="warning" />
+                     <div class="alert-table">{{varb.message_2}}</div>
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template pTemplate="loadingbody">
+            <tr>
+               <td colspan="18">
+                  <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                     <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text">Cargando datos, por favor espere...</div>
+                     </div> 
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+      </p-table>
+   </mat-card-content>
+</mat-card>

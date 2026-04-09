@@ -1,0 +1,293 @@
+<div class="header-title">
+   <h1>Monitor Ofertas</h1>
+</div>
+
+<mat-card class="mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <div class="flex flex-wrap">
+         <div class="col-12 flex flex-wrap gap-2">
+            <div class="flex items-center">
+               <p-radiobutton name="formatos" value="OFERTA" inputId="ingredient1" [(ngModel)]="varb.formatos" (onClick)="varb.table = []" />
+               <label for="ingredient1" class="ml-2 font-bold">OFERTA</label>
+            </div>
+
+            <div class="flex items-center">
+               <p-radiobutton name="formatos" value="PROMOCION" inputId="ingredient2" [(ngModel)]="varb.formatos" (onClick)="varb.table = []" />
+               <label for="ingredient2" class="ml-2 font-bold">PROMOCION</label>
+            </div>
+         </div>
+
+         <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3">
+            <span class="font-bold text-700">Sucursal</span>
+            <p-select optionLabel="nombre" filterBy="nombre" placeholder="Seleccionar Sucursal" class="w-full"
+                  [options]="varb.sucursales"
+                  [(ngModel)]="varb.selectSuc"
+                  [filter]="true"
+                  [showClear]="true" 
+                  [disabled]="(varb.user.cve_sucursal !== '99') ? true : false"
+                  emptyMessage="Sin opciones disponibles."
+                  emptyFilterMessage="No se encontraron resultados."
+               >
+                  <ng-template #selectedItem let-selectedOption>
+                     <div class="flex items-center gap-2">
+                        <div>{{ selectedOption.nombre }}</div>
+                     </div>
+                  </ng-template>
+      
+                  <ng-template let-suc #item>
+                     <div class="flex items-center gap-2">
+                        <div>{{ suc.nombre }}</div>
+                     </div>
+                  </ng-template>
+               </p-select>
+         </div>
+               
+         <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3">
+            <span class="font-bold text-700">Proveedor</span>
+            <p-select [options]="varb.proveedor" [(ngModel)]="varb.selectProv" [editable]="true"
+               emptyMessage="Sin opciones disponibles." optionLabel="descripcion" class="w-full" 
+               placeholder="Buscar Proveedor" showClear="true" (ngModelChange)="onSearchChangeProveedor($event)" />
+         </div>
+         
+         <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2">
+            <span class="font-bold text-700">Fecha Inicio</span>
+            <input type="date" pInputText [(ngModel)]="varb.fecha" class="w-full" />
+         </div>
+
+         <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2">
+            <span class="font-bold text-700">Fecha Fin</span>
+            <input type="date" pInputText [(ngModel)]="varb.fechaFin" class="w-full" />
+         </div>
+
+         <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2">
+            <p-button label="Buscar" icon="bi bi-search" class="flex mtm-3" severity="info" (onClick)="Cargar_Fun_Read()" />
+         </div>
+      </div>
+
+      <!-- =================================== TABLA =================================== -->
+      <p-table #dt 
+         size="small"
+         currentPageReportTemplate="Total: {totalRecords}"
+         [value]="varb.table"
+         [loading]="varb.loading"
+         [rows]="15"
+         [rowsPerPageOptions]="[15, 30, 50, 100]"
+         [globalFilterFields]="['status', 'cve_sucursal', 'folio', 'observaciones', 'cve_presentacion', 'cve_producto', 'precio_oferta', 
+         'descripcion', 'fecha_inicio', 'fecha_fin', 'tipo_promocion_descripcion', 'oferta']"
+         [paginator]="true"
+         [customSort]="true"
+         [showCurrentPageReport]="true"
+         (sortFunction)="fun.customSort($event)"
+      >
+         <ng-template #caption>
+            <div class="flex gap-2">
+               <div class="flex items-center">
+                  <i class="bi bi-circle-fill" style="color: var(--color-success);"></i>
+                  <label for="ingredient1" class="ml-2 font-bold">Oferta Activa</label>
+               </div>
+
+               <div class="flex items-center">
+                  <i class="bi bi-circle-fill" style="color: var(--color-danger);"></i>
+                  <label for="ingredient1" class="ml-2 font-bold">Oferta Terminada</label>
+               </div>
+
+               <div class="flex items-center">
+                  <i class="bi bi-circle-fill" style="color: var(--color-warning);"></i>
+                  <label for="ingredient1" class="ml-2 font-bold">Oferta Próxima</label>
+               </div>
+
+               <p-iconfield iconPosition="left" class="ml-auto">
+                  <p-inputicon>
+                     <i class="pi pi-search"></i>
+                  </p-inputicon>
+                  <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+               </p-iconfield>
+            </div>
+         </ng-template>
+
+         @if (varb.formatos == 'OFERTA') {
+            <ng-template #header>
+               <tr>
+                  <th pSortableColumn="clave_sucursal">
+                     <div class="flex justify-content-center gap-1">
+                        Clave Suc.
+                        <p-sortIcon field="clave_sucursal" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="folio">
+                     <div class="flex justify-content-center gap-1">
+                        Folio
+                        <p-sortIcon field="folio" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="observaciones">
+                     <div class="flex justify-content-center gap-1">
+                        Observaciones
+                        <p-sortIcon field="observaciones" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="cve_presentacion">
+                     <div class="flex justify-content-center gap-1">
+                        Pres.
+                        <p-sortIcon field="cve_presentacion" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="cve_producto">
+                     <div class="flex justify-content-center gap-1">
+                        Producto
+                        <p-sortIcon field="cve_producto" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="descripcion">
+                     <div class="flex justify-content-center gap-1">
+                        Descripción
+                        <p-sortIcon field="descripcion" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="precio_oferta">
+                     <div class="flex justify-content-center gap-1">
+                        Precio Oferta
+                        <p-sortIcon field="precio_oferta" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="fecha_inicio">
+                     <div class="flex justify-content-center gap-1">
+                        Fecha Inicio
+                        <p-sortIcon field="fecha_inicio" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="fecha_fin">
+                     <div class="flex justify-content-center gap-1">
+                        Fecha Fin
+                        <p-sortIcon field="fecha_fin" />
+                     </div>
+                  </th>
+               </tr>
+            </ng-template>
+
+            <ng-template #body let-item>
+               <tr [classList]="item.status == 'AC' ? 'bg-green': item.status == 'PR' ? 'bg-warn' : item.status == 'TR' ?  'bg-danger' : ''">
+                  <td class="text-center">{{ item.cve_sucursal }}</td>
+                  <td class="text-center">{{ item.folio }}</td>
+                  <td class="text-center">{{ item.observaciones }}</td>
+                  <td class="text-center">{{ item.cve_presentacion }}</td>
+                  <td class="text-center">{{ item.cve_producto }}</td>
+                  <td class="text-center">{{ item.descripcion }}</td>
+                  <td class="text-center">{{ item.precio_oferta | currency:'MXN':'symbol-narrow':'1.0-2' }}</td>
+                  <td class="text-center">{{ item.fecha_inicio }}</td>
+                  <td class="text-center">{{ item.fecha_fin }}</td>
+               </tr>
+            </ng-template>
+         } 
+
+         @if (varb.formatos == 'PROMOCION') {
+            <ng-template #header>
+               <tr>
+                  <th pSortableColumn="clave_sucursal">
+                     <div class="flex justify-content-center gap-1">
+                        Clave Suc.
+                        <p-sortIcon field="clave_sucursal" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="folio">
+                     <div class="flex justify-content-center gap-1">
+                        Folio
+                        <p-sortIcon field="folio" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="fecha_inicio">
+                     <div class="flex justify-content-center gap-1">
+                        Fecha Inicio
+                        <p-sortIcon field="fecha_inicio" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="fecha_fin">
+                     <div class="flex justify-content-center gap-1">
+                        Fecha Fin
+                        <p-sortIcon field="fecha_fin" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="status">
+                     <div class="flex justify-content-center gap-1">
+                        Status
+                        <p-sortIcon field="status" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="tipo_promocion_descripcion ">
+                     <div class="flex justify-content-center gap-1">
+                        Tipo de Promoción
+                        <p-sortIcon field="tipo_promocion_descripcion" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="cve_producto">
+                     <div class="flex justify-content-center gap-1">
+                        Producto
+                        <p-sortIcon field="cve_producto" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="cve_presentacion">
+                     <div class="flex justify-content-center gap-1">
+                        Pres.
+                        <p-sortIcon field="cve_presentacion" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="descripcion">
+                     <div class="flex justify-content-center gap-1">
+                        Descripción
+                        <p-sortIcon field="descripcion" />
+                     </div>
+                  </th>
+                  <th pSortableColumn="oferta">
+                     <div class="flex justify-content-center gap-1">
+                        Oferta
+                        <p-sortIcon field="oferta" />
+                     </div>
+                  </th>
+                  
+               </tr>
+            </ng-template>
+
+            <ng-template #body let-item>
+               <tr [classList]="(item.status == 'AC') ? (item.fecha_inicio > item.fecha_actual) ? 'bg-warn' : 
+                     (item.fecha_inicio <= item.fecha_actual && item.fecha_fin >= item.fecha_actual) ? 'bg-green' : 'bg-danger'
+                  : item.status == 'CP' ? 'bg-warn' : item.status == 'CN' ?  'bg-danger' : ''">
+                  <td class="text-center">{{ item.cve_sucursal }}</td>
+                  <td class="text-center">{{ item.folio }}</td>
+                  <td class="text-center">{{ item.fecha_inicio }}</td>
+                  <td class="text-center">{{ item.fecha_fin }}</td>
+                  <td class="text-center">{{ item.status }}</td>
+                  <td class="text-center">{{ item.tipo_promocion_descripcion }}</td>
+                  <td class="text-center">{{ item.cve_producto }}</td>
+                  <td class="text-center">{{ item.cve_presentacion }}</td>
+                  <td class="text-center">{{ item.descripcion }}</td>
+                  <td class="text-center" style="text-wrap-mode: nowrap;">{{ item.oferta }}</td>
+               </tr>
+            </ng-template>
+         }
+         
+         <ng-template #emptymessage>
+            <tr>
+               <td [colSpan]="colspan">
+                  <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                     <img src="undraw/warning.svg" height="150" alt="warning" />
+                     <div class="alert-table">{{varb.message}}</div>
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template pTemplate="loadingbody">
+            <tr>
+               <td [colSpan]="colspan">
+                  <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                     <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text">Cargando datos, por favor espere...</div>
+                     </div> 
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+      </p-table>
+   </mat-card-content>
+</mat-card>

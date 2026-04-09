@@ -1,0 +1,37 @@
+<div *ngIf="varb.loading">
+   <app-spinner #spinner></app-spinner>
+</div>
+
+<div class="container">
+   <p-card>
+      <ng-template #header>
+         <div class="flex justify-content-center">
+            <img src="logos/gbm.png" alt="Image" height="150" class="mb-5">
+         </div>
+         <div class="mb-1 text-center header-title">
+            <h2>INICIO DE SESION <span *ngIf="varb.demo">DEMO</span></h2>
+         </div>
+      </ng-template>
+      
+      <form [formGroup]="form" (submit)="Read_Login()">
+         <div pFocusTrap class="col-12 flex flex-column gap-3">
+            <p-iconfield>
+               <p-inputicon class="pi pi-user" />
+               <input type="text" pInputText formControlName="username" placeholder="Nombre de Usuario" [fluid]="true" (input)="Ocultar_Alerta()" />
+            </p-iconfield>
+         
+            <p-iconfield class="mt-2">
+               <p-password formControlName="password" placeholder="Contraseña" [toggleMask]="true" [fluid]="true" [feedback]="false" (input)="Ocultar_Alerta()"  />
+            </p-iconfield>
+            
+            <p-message *ngIf="varb.alert" severity="error" variant="simple">
+               <div [innerHTML]="varb.message"></div>
+            </p-message>
+         
+            <section class="flex justify-content-center mt-3">
+               <button matButton="filled">Entrar</button>   
+            </section>
+         </div>
+      </form>
+  </p-card>
+</div>

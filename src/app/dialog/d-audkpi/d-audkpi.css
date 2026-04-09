@@ -1,0 +1,15 @@
+*{
+   background: #ffffff;
+}
+
+:host ::ng-deep .p-overlay-mask {
+   display: none;
+}
+
+:host ::ng-deep .p-knob-text {
+   font-size: 1rem;
+}
+
+:host ::ng-deep .red .p-knob-value {
+  stroke: #ef4444 !important;
+}

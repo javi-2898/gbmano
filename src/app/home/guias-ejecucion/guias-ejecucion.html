@@ -1,0 +1,90 @@
+<div class="header-title">
+   <h1>Guías de Ejecución</h1>
+</div>
+
+<mat-card class="mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <!-- =================================== TABLA =================================== -->
+      <p-table #dt 
+         size="small"
+         currentPageReportTemplate="Total: {totalRecords}"
+         [value]="varb.table"
+         [loading]="varb.loading"
+         [rows]="15"
+         [rowsPerPageOptions]="[15, 30, 50, 100]"
+         [globalFilterFields]="['Tipo', 'Evaluacion', 'Area', 'Apartado']"
+         [paginator]="true"
+         [customSort]="true"
+         [showCurrentPageReport]="true"
+         (sortFunction)="fun.customSort($event)"
+      >
+         <ng-template #caption>
+            <div class="col-12 padding flex">
+               <p-iconfield iconPosition="left" class="ml-auto">
+                  <p-inputicon>
+                     <i class="pi pi-search"></i>
+                  </p-inputicon>
+                  <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+               </p-iconfield>
+            </div>
+         </ng-template>
+
+         <ng-template #header>
+            <tr>
+               <th pSortableColumn="Tipo">
+                  <div class="flex justify-content-center gap-1">
+                     Tipo
+                     <p-sortIcon field="Tipo" />
+                  </div>
+               </th>
+               <th pSortableColumn="Evaluacion">
+                  <div class="flex justify-content-center gap-1">
+                     Evaluación
+                     <p-sortIcon field="Evaluacion" />
+                  </div>
+               </th>
+               <th pSortableColumn="Estatus">
+                  <div class="flex justify-content-center gap-1">
+                     Estatus
+                     <p-sortIcon field="Estatus" />
+                  </div>
+               </th>
+            </tr>
+         </ng-template>
+
+         <ng-template #body let-item>
+            <tr class="cursor" (click)="Open_Dialog_Indicador(item)">
+               <td class="text-center">{{ fun.toTitulo(item.Tipo) }}</td>
+               <td class="text-center">{{ fun.toTitulo(item.Evaluacion) }}</td>
+               <td class="text-center">
+                  <p-tag severity="{{fun.Tag_Priority(item.Estatus)}}" value="{{fun.toTitulo(item.Estatus)}}" [rounded]="true" />
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template #emptymessage>
+            <tr>
+               <td colspan="4">
+                  <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                     <img src="undraw/warning.svg" height="150" alt="warning" />
+                     <div class="alert-table">{{varb.message}}</div>
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template pTemplate="loadingbody">
+            <tr>
+               <td colspan="4">
+                  <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                     <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text">Cargando datos, por favor espere...</div>
+                     </div> 
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+      </p-table>
+   </mat-card-content>
+</mat-card>

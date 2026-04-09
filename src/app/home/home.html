@@ -1,0 +1,220 @@
+<div class="container">
+  <!-- ======================== Navigation ======================== -->
+   <div class="navigation" #navigation>
+      <ul>
+         <li>
+            <a href="javascript:void(0)">
+               <div class="logo">
+                  <img src="logos/gbm3.png" alt="logo">
+               </div>
+               
+               <span class="title">
+                  <label style="font-weight: 600;">GB</label>MANO 
+                  @if (varb.demo) {
+                     <label>DEMO</label>
+                  }
+               </span>
+            </a>
+         </li>
+
+         <li [class.active-sub]="activeSubmenu === 'dashboard'">
+            <a href="javascript:void(0)" (click)="toggleSubmenu('dashboard', $event)">
+               <span class="icon"><i class="bi bi-speedometer2"></i></span>
+               <span class="title">Dashboard</span>
+               <span class="arrow"><i class="bi" [ngClass]="activeSubmenu === 'dashboard' ? 'bi-chevron-up' : 'bi-chevron-down'"></i></span>
+            </a>
+
+            <ul class="submenu" [class.show]="activeSubmenu === 'dashboard'">
+               <li></li> <!-- No eliminar -->
+
+               @if (varb.user.usuario == 'alonsom' || varb.user.usuario == 'mtp') {
+                  <li>
+                     <a routerLink="dashboard_general">
+                        <span class="icon"><i class="bi bi-shop-window" style="font-size: 20px;"></i></span>
+                        <span class="title">General</span>
+                     </a>
+                  </li>
+               }
+
+               <li>
+                  <a routerLink="dashboard">
+                     <span class="icon"><i class="bi bi-shop" style="font-size: 20px;"></i></span>
+                     <span class="title">Sucursal</span>
+                  </a>
+               </li>
+            </ul>
+         </li>
+
+         <li>
+            <a href="javascript:void(0)" routerLink="productos">
+               <span class="icon">
+                  <i class="bi bi-box-seam"></i>
+               </span>
+               <span class="title">Productos</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="javascript:void(0)" routerLink="analisis">
+               <span class="icon">
+                  <i class="bi bi bi-clipboard-data"></i>
+               </span>
+               <span class="title">Análisis</span>
+            </a>
+         </li>
+
+         @if (this.varb.user.cve_sucursal == '99') {
+            <li>
+               <a href="javascript:void(0)" routerLink="evaluaciones">
+                  <span class="icon">
+                     <i class="bi bi-file-earmark-check"></i>
+                  </span>
+                  <span class="title">Evaluaciones</span>
+               </a>
+            </li>
+         }
+
+         @if (this.varb.user.cve_sucursal == '99') {
+            <li>
+               <a href="javascript:void(0)" routerLink="encuestas">
+                  <span class="icon">
+                     <i class="bi bi-card-heading"></i>
+                  </span>
+                  <span class="title">Encuestas</span>
+               </a>
+            </li>
+         }
+
+         <li>
+            <a href="javascript:void(0)" routerLink="produccion_panaderia">
+               <span class="icon">
+                  <i class="bi bi-card-checklist"></i>
+               </span>
+               <span class="title">Producción panadería</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="javascript:void(0)" routerLink="asistencia">
+               <span class="icon">
+                  <i class="bi bi-person-badge"></i>
+               </span>
+               <span class="title">Asistencia</span>
+            </a>
+         </li>
+
+         @if (this.varb.user.cve_sucursal == '99') {
+            <li>
+               <a href="javascript:void(0)" routerLink="power_bi">
+                  <span class="icon">
+                     <i class="bi bi-bar-chart-fill"></i>
+                  </span>
+                  <span class="title">Power BI</span>
+               </a>
+            </li>
+         }
+
+         <li>
+            <a href="javascript:void(0)" routerLink="guias_ejecucion">
+               <span class="icon">
+                  <i class="bi bi-file-earmark-richtext"></i>
+               </span>
+               <span class="title">Guías de Ejecución</span>
+            </a>
+         </li>
+
+         @if (this.varb.user.cve_sucursal == '99') {
+            <li>
+               <a href="javascript:void(0)" routerLink="resultados_generales">
+                  <span class="icon">
+                     <i class="bi bi-file-text"></i>
+                  </span>
+                  <span class="title">Resultados Generales</span>
+               </a>
+            </li>
+         }
+
+          <li>
+            <a href="javascript:void(0)" routerLink="monitor_ofertas">
+               <span class="icon">
+                  <i class="bi bi-tv"></i>
+               </span>
+               <span class="title">Monitor Ofertas</span>
+            </a>
+         </li>
+
+         <!--
+         <li>
+            <a href="javascript:void(0)" [routerLink]="['examen']">
+               <span class="icon">
+                  <i class="bi bi-arrow-left-right"></i>
+               </span>
+               <span class="title">Traspasos por recibir</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="javascript:void(0)" [routerLink]="['examen']">
+               <span class="icon">
+                  <i class="bi bi-clipboard2-check"></i>
+               </span>
+               <span class="title">Trazabilidad panadería</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="javascript:void(0)" [routerLink]="['examen']">
+               <span class="icon">
+                  <i class="bi bi-clock"></i>
+               </span>
+               <span class="title">Horarios</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="javascript:void(0)" [routerLink]="['examen']">
+               <span class="icon">
+                  <i class="bi bi-shop"></i>
+               </span>
+               <span class="title">Desempeño</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="javascript:void(0)" [routerLink]="['examen']">
+               <span class="icon">
+                  <i class="bi bi-gear"></i>
+               </span>
+               <span class="title">Configuración</span>
+            </a>
+         </li>-->
+      </ul>
+   </div>
+
+   <!-- ======================== Main ======================== -->
+   <div class="main">
+      <div class="topbar">
+         <div class="toggle">
+            <i class="pi pi-bars text-3xl"></i>
+         </div>
+
+         <div class="breadcrumb" (click)="openDialog()">
+            <h2>{{varb.sucursal?.nombre}}</h2>
+         </div>
+         
+         <div (click)="menu.toggle($event)" class="flex flex-row justify-content-center align-items-center gap-1" style="cursor: pointer;">
+            <div class="user">
+               <img src="undraw/avatar.svg" alt="">
+            </div>
+            <i class="bi bi-chevron-down"></i>
+         </div>
+      </div>
+   
+      <div class="content">
+         <router-outlet />
+      </div>
+   </div>
+
+   <p-menu #menu [model]="items" [popup]="true" />
+</div>
+

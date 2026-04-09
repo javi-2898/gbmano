@@ -1,0 +1,304 @@
+<div class="header-title">
+   <h1>Análisis</h1>
+</div>
+
+<div class="col-12 padding flex flex-wrap">
+   <div class="col-3">
+      <mat-card  class="mt-2" appearance="outlined" style="background: #ffffff;">
+         <mat-card-header>
+            <h2 class="title text-spacing">FILTROS</h2>
+         </mat-card-header>
+
+         <mat-card-content>
+            <div class="col-12">
+               <div class="flex flex-wrap gap-3">
+                  <div class="flex items-center">
+                     <p-checkbox inputId="ingredient1" name="existencia" value="1" [(ngModel)]="varb.existenciaT" (ngModelChange)="onChangeExitencia($event)"  />
+                     <label for="ingredient1" class="ml-1"> Existencia </label>
+                  </div>
+
+                  <div class="flex items-center">
+                     <p-checkbox inputId="ingredient2" name="sinExistencia" value="1" [(ngModel)]="varb.existenciaST" (ngModelChange)="onChangeSinExitencia($event)"  />
+                     <label for="ingredient2" class="ml-1"> Sin Existencia </label>
+                  </div>
+
+                  <div class="flex items-center">
+                     <p-checkbox inputId="ingredient3" name="sinVenta" value="1" [(ngModel)]="varb.existenciaSV" (ngModelChange)="onChangeSinVenta($event)"  />
+                     <label for="ingredient3" class="ml-1"> Sin Venta </label>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-12">
+               <span class="font-bold">Proveedor</span>
+               <p-select [options]="varb.proveedor" [(ngModel)]="varb.selectProv" [editable]="true"
+               emptyMessage="Sin opciones disponibles." optionLabel="descripcion" class="w-full" placeholder="Buscar Proveedor" showClear="true" (ngModelChange)="onSearchChangeProveedor($event)" />
+            </div>
+
+            <div class="col-12">
+               <span class="font-bold">Marca</span>
+               <p-select [options]="varb.marca" [(ngModel)]="varb.selectMarca" [editable]="true" 
+               emptyMessage="Sin opciones disponibles." optionLabel="descripcion" class="w-full" placeholder="Buscar Marca" showClear="true" (ngModelChange)="onSearchChangeMarca($event)" />
+            </div>
+
+            <div class="col-12">
+               <span class="font-bold">Categoria</span>
+               <p-select [options]="varb.categoria" [(ngModel)]="varb.selectCategoria" optionLabel="nombre" [filter]="true" filterBy="nombre" [showClear]="true" placeholder="Seleccionar" class="w-full" 
+               (ngModelChange)="onChangeCategoria($event)">
+                  <ng-template #selectedItem let-selectedOption>
+                     <div class="flex items-center gap-2">
+                        <div>{{ selectedOption.text }}</div>
+                     </div>
+                  </ng-template>
+                  <ng-template let-items #item>
+                     <div class="flex items-center gap-2">
+                        <div>{{ items.text }}</div>
+                     </div>
+                  </ng-template>
+               </p-select>
+            </div>
+         </mat-card-content>
+      </mat-card>
+   </div>
+
+   <div class="col-9">
+      <mat-card  class="mt-2" appearance="outlined" style="background: #ffffff;">
+         <mat-card-header>
+            <h2 class="title text-spacing">COMPARATIVA GENERAL</h2>
+         </mat-card-header>
+
+         <mat-card-content>
+            <div class="col-12 padding flex flex-wrap">
+               <div class="col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding">
+                     <span class="font-bold">SKUS</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span class="text-green-700 font-bold">{{ varb.skus | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>{{ varb.filtroSKUS | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>{{ varb.porcSKUS | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+
+               <div class="col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding">
+                     <span class="font-bold">EXISTENCIA</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span class="text-green-700 font-bold">{{ varb.totalExistencia | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>{{ varb.filtroExistencia | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>{{ varb.porcExistencia | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+
+               <div class="col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding">
+                     <span class="font-bold">VENTAS</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span class="text-green-700 font-bold">{{ varb.totalVenta | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>{{ varb.filtroVenta | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>{{ varb.porcVenta | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+
+               <div class="col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding">
+                     <span class="font-bold">IMPORTE</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span class="text-green-700 font-bold">${{ varb.totalImporte | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>${{ varb.filtroImporte | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding">
+                     <span>{{ varb.porcImporte | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+            </div>
+         </mat-card-content>
+      </mat-card>
+
+      <mat-card  class="mt-4" appearance="outlined" style="background: #ffffff;">
+         <mat-card-header>
+            <h2 class="title text-spacing mb-2">ROTACION DE PRODUCTOS 60 DIAS DE VENTAS</h2>
+         </mat-card-header>
+
+         
+         <div class="col-12 flex justify-content-end">
+            <p-button label="Exportar Excel" icon="pi pi-file-excel" severity="success" (click)="exportExcel(dt)" />
+         </div>
+      
+         <mat-card-content>
+            <p-table #dt size="small"
+               [value]="dataSource"
+               [loading]="varb.loading"
+               [rows]="10"
+               [rowsPerPageOptions]="[10, 30, 50, 100]"
+               [paginator]="true"
+               [customSort]="true"
+               [showCurrentPageReport]="true"
+               (sortFunction)="fun.customSort($event)"
+               currentPageReportTemplate="Total: {totalRecords}"
+            >
+
+               <ng-template #header>
+                  <tr>
+                     <th pSortableColumn="cve_producto" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Clave
+                           <p-sortIcon field="cve_producto" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="descripcion" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Descripción
+                           <p-sortIcon field="descripcion" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="unidades" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Unidad
+                           <p-sortIcon field="unidades" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="importe_vta">
+                        <div class="flex items-center gap-1">
+                           Monto Venta
+                           <p-sortIcon field="importe_vta" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="desplazamiento">
+                        <div class="flex items-center gap-1">
+                           Desplazamiento
+                           <p-sortIcon field="desplazamiento" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="rotacion" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Promedio Venta Diaria
+                           <p-sortIcon field="rotacion" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="existencia" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Exitencia
+                           <p-sortIcon field="existencia" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="DiasInv" class="text-center" >
+                        <div class="flex items-center gap-1">
+                           Días Inventario
+                           <p-sortIcon field="DiasInv" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="participacion" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Participación Monto
+                           <p-sortIcon field="participacion" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="existencia80" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Almacén 80
+                           <p-sortIcon field="existencia80" />
+                        </div>
+                     </th>
+                     <th pSortableColumn="ultimaventa" class="text-center">
+                        <div class="flex items-center gap-1">
+                           Ultima Entrada
+                           <p-sortIcon field="ultimaventa" />
+                        </div>
+                     </th>
+                  </tr>
+               </ng-template>
+
+               <ng-template #body let-item>
+                  <tr class="{{item.clasificacion == 'A' ? 'bg-green': item.clasificacion == 'B' ? 'bg-warn' : 'bg-danger'}}">
+                     <td class="text-center">{{ item.cve_producto }}</td>
+                     <td class="text-center">{{ item.descripcion }}</td>
+                     <td class="text-center">{{ item.unidades | number : '1.0-2' }}</td>
+                     <td class="text-center">${{ item.importe_vta | number : '1.0-2' }}</td>
+                     <td class="text-center">{{ item.desplazamiento | number : '1.0-2' }}</td>
+                     <td class="text-center">{{ item.rotacion | number : '1.0-2' }}</td>
+                     <td class="text-center">{{ item.existencia | number : '1.0-2' }}</td>
+                     <td class="text-center">{{ item.DiasInv | number : '1.0-2' }}</td>
+                     <td class="text-center">{{ item.participacion | number : '1.0-2' }}%</td>
+                     <td class="text-center">{{ item.existencia80 | number : '1.0-2' }}</td>
+                     <td class="text-center">{{ item.ultimaventa }}</td>
+                  </tr>
+               </ng-template>
+
+               <ng-template #emptymessage>
+                  <tr>
+                     <td colspan="10">
+                        <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                           <img src="undraw/warning.svg" height="150" alt="warning" />
+                           <div class="alert-table">{{varb.message}}</div>
+                        </div>
+                     </td>
+                  </tr>
+               </ng-template>
+
+               <ng-template pTemplate="loadingbody">
+                  <tr>
+                     <td colspan="10">
+                        <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                           <div class="loader-container">
+                              <div class="loader"></div>
+                              <div class="loader-text">Cargando datos, por favor espere...</div>
+                           </div> 
+                        </div>
+                     </td>
+                  </tr>
+               </ng-template>
+            </p-table>
+         </mat-card-content>
+      </mat-card>
+   </div>
+</div>

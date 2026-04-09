@@ -1,0 +1,11 @@
+@if (mostrarModal) {
+   <div class="modal-backdrop">
+      <div class="modal">
+         <h2 class="title mb-2">¡Nueva versión disponible!</h2>
+         <p class="p-text mb-1">Hay una actualización. Por favor, dar clic en el botón actualizar.</p>
+         <p-button label="Actualizar" severity="primary" [rounded]="true" (click)="recargarPagina()"/>
+      </div>
+   </div>
+}
+
+<router-outlet />

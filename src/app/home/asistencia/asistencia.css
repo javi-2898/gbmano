@@ -1,0 +1,22 @@
+.title {
+   color: var(--color-primary);
+}
+
+.bg-green {
+   background-color: var(--color-light-green);
+}
+
+.bg-primary {
+   background-color: var(--color-light-primary) !important;
+   color: #000 !important;
+}
+
+@media (max-width: 480px) { 
+   .th-general {
+      font-size: 11px;
+   }
+
+   .td-general {
+      font-size: 11px;
+   }
+}

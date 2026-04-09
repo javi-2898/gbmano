@@ -1,0 +1,36 @@
+.th-kpi {
+   width: 200px;
+   text-align: center;
+}
+
+.th-general {
+   text-align: center;
+}
+
+.td-general {
+   text-align: center;
+}
+
+.td-total {
+   font-weight: 600;
+   text-align: center;
+}
+
+.title {
+   color: var(--color-primary);
+}
+
+@media (max-width: 480px) { 
+   .th-kpi {
+      width: 200px;
+      font-size: 11px;
+   }
+
+   .th-general {
+      font-size: 11px;
+   }
+
+   .td-general {
+      font-size: 11px;
+   }
+}

@@ -1,0 +1,18 @@
+.powerbi-container {
+   width: 100%; 
+   height: calc(100vh - 120px);
+   background-color: #f0f0f0; 
+   border: 1px solid #ddd;
+   padding: 10px; /* Un poco de espacio alrededor del informe */
+   box-sizing: border-box; /* Para que el padding y border se incluyan en el ancho/alto */
+}
+
+.powerbi-iframe-style {
+   width: 100%; 
+   height: 100%; 
+}
+
+.powerbi-iframe-style iframe {
+  width: 100%;
+  height: 100%;
+}

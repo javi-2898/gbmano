@@ -1,0 +1,12 @@
+:host ::ng-deep .mat-dialog-container {
+   padding: 0 !important;
+   border-radius: 12px;
+}
+
+.dialog-image {
+   display: block; /* Elimina espacio extra debajo de la imagen */
+   max-width: 100%; /* La imagen no será más ancha que el diálogo */
+   max-height: 80vh; /* Opcional: Limita la altura de la imagen para dejar espacio al título/botones */
+   height: auto;
+   width: auto;
+}

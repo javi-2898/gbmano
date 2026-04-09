@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>IMAGEN</h2>
+
+<mat-dialog-content>
+   <p-image [src]="Get_Imagen(data.img, data.area)" alt="Image" class="dialog-image" />
+</mat-dialog-content>
+
+<mat-dialog-actions>
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" variant="outlined" [rounded]="true" />
+</mat-dialog-actions>

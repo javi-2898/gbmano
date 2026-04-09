@@ -1,0 +1,204 @@
+<div class="header-title">
+   <h1>Encuestas</h1>
+</div>
+
+<div *ngIf="varb.loading">
+   <app-spinner #spinner></app-spinner>
+</div>
+
+<!-- =================================== CARD =================================== -->
+<mat-card class="mt-4" appearance="outlined" style="background: #ffffff;">
+   <mat-card-content>
+      <!-- =================================== TABLA =================================== -->
+      <p-table #dt 
+         size="small"
+         dataKey="numero"
+         currentPageReportTemplate="Total: {totalRecords}"
+         [value]="varb.table"
+         [loading]="varb.loading_2"
+         [rows]="15"
+         [rowsPerPageOptions]="[15, 30, 50, 100]"
+         [globalFilterFields]="['Tipo', 'Evaluacion', 'Area', 'Apartado']"
+         [paginator]="true"
+         [customSort]="true"
+         [showCurrentPageReport]="true"
+         (sortFunction)="fun.customSort($event)"
+      >
+         <ng-template #caption>
+            <div class="col-12 padding flex flex-wrap">
+               <div class="col-8 padding flex">
+                  <p-button label="Crear Encuesta" icon="bi bi-plus-circle" severity="success" (onClick)="Open_Dialog_Visor_Encuestas()" />
+               </div>
+
+               <div class="col-4 padding">
+                  <div class="flex">   
+                     <p-iconfield iconPosition="left" class="ml-auto">
+                        <p-inputicon>
+                           <i class="pi pi-search"></i>
+                        </p-inputicon>
+                        <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                     </p-iconfield>
+                  </div>
+               </div>
+            </div>
+         </ng-template>
+
+         <ng-template #header>
+            <tr>
+               <th></th>
+               <th pSortableColumn="Tipo">
+                  <div class="flex justify-content-center gap-1">
+                     Tipo
+                     <p-sortIcon field="Tipo" />
+                  </div>
+               </th>
+               <th pSortableColumn="Evaluacion">
+                  <div class="flex justify-content-center gap-1">
+                     Evaluación
+                     <p-sortIcon field="Evaluacion" />
+                  </div>
+               </th>
+               <th pSortableColumn="Estatus">
+                  <div class="flex justify-content-center gap-1">
+                     Estatus
+                     <p-sortIcon field="Estatus" />
+                  </div>
+               </th>
+            </tr>
+         </ng-template>
+
+         <ng-template #body let-item let-expanded="expanded">
+            <tr>
+               <td class="text-center">
+                  <p-button type="button" pRipple [pRowToggler]="item" [text]="true" [rounded]="true" size="small" severity="secondary" 
+                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" (onClick)="!expanded && Read_Evaluacion_Preguntas(item)" />
+               </td>
+               <td class="text-center">{{ fun.toTitulo(item.Tipo) }}</td>
+               <td class="text-center">{{ fun.toTitulo(item.Evaluacion) }}</td>
+               <td class="text-center">
+                  <p-tag severity="{{fun.Tag_Priority(item.Estatus)}}" value="{{fun.toTitulo(item.Estatus)}}" [rounded]="true" class="cursor" (click)="Update_Evaluacion(item)" />
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template #emptymessage>
+            <tr>
+               <td colspan="4">
+                  <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                     <img src="undraw/warning.svg" height="150" alt="warning" />
+                     <div class="alert-table">{{varb.message}}</div>
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <ng-template pTemplate="loadingbody">
+            <tr>
+               <td colspan="4">
+                  <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                     <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text">Cargando datos, por favor espere...</div>
+                     </div> 
+                  </div>
+               </td>
+            </tr>
+         </ng-template>
+
+         <!-- =================================== EXPANDED ROW =================================== -->
+         <ng-template #expandedrow let-param>
+            <tr style="background-color: #f8fafc;">
+               <td colspan="7">
+                  <p-table #tbl 
+                     stripedRows
+                     showGridlines 
+                     dataKey="numero"
+                     scrollHeight="600px"
+                     [loading]="varb.loading_3"
+                     [value]="param.PreguntasDetalle"
+                     [scrollable]="true"
+                     [customSort]="true"
+                     [globalFilterFields]="['Area', 'Apartado', 'NoPregunta']"
+                     (sortFunction)="fun.customSort($event)"
+                  >
+                     <ng-template #caption>
+                        <div class="flex">   
+                           <p-iconfield iconPosition="left" class="ml-auto">
+                              <p-inputicon>
+                                 <i class="pi pi-search"></i>
+                              </p-inputicon>
+                              <input pInputText type="text" class="w-full" (input)="tbl.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                           </p-iconfield>
+                        </div>
+                     </ng-template>
+
+                     <ng-template #header>
+                        <tr>
+                           <th pSortableColumn="Area">
+                              <div class="flex justify-content-center gap-1">
+                                 Area
+                                 <p-sortIcon field="Area" />
+                              </div>
+                           </th>
+                           <th pSortableColumn="Seccion">
+                              <div class="flex justify-content-center gap-1">
+                                 Apartado
+                                 <p-sortIcon field="Seccion" />
+                              </div>
+                           </th>
+                           <th pSortableColumn="Pregunta">
+                              <div class="flex justify-content-center gap-1">
+                                 Preguntas
+                                 <p-sortIcon field="Pregunta" />
+                              </div>
+                           </th>
+                           <th *ngIf="param.Tipo == 'EJECUCION' ? true : false" pSortableColumn="Pregunta">
+                              <div class="flex justify-content-center gap-1">
+                                 Imagen
+                                 <p-sortIcon field="Pregunta" />
+                              </div>
+                           </th>
+                        </tr>
+                     </ng-template>
+
+                     <ng-template #body let-item>
+                        <tr>
+                           <td class="text-center">{{ item.Area }}</td>
+                           <td class="text-center">{{ item.Apartado }}</td>
+                           <td class="text-center cursor" (click)="Open_Dialog_Preguntas(item.Preguntas, param.Tipo)">{{ item.NoPregunta }}</td>
+                           <td *ngIf="param.Tipo == 'EJECUCION' ? true : false" class="text-center">
+                              <p-button icon="bi bi-image" severity="info" size="small" rounded="true" outlined="true" (onClick)="Open_Dialog_Img(item.Imagen, item.Area)" />
+                           </td>
+                        </tr>
+                     </ng-template>
+
+                     <ng-template #emptymessage>
+                        <tr>
+                           <td colspan="4">
+                              <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                                 <img src="undraw/warning.svg" height="150" alt="warning" />
+                                 <div class="alert-table">{{varb.message_2}}</div>
+                              </div>
+                           </td>
+                        </tr>
+                     </ng-template>
+
+                     <ng-template pTemplate="loadingbody">
+                        <tr>
+                           <td colspan="4">
+                              <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                                 <div class="loader-container">
+                                    <div class="loader"></div>
+                                    <div class="loader-text">Cargando datos, por favor espere...</div>
+                                 </div> 
+                              </div>
+                           </td>
+                        </tr>
+                     </ng-template>
+                  </p-table>
+               </td>
+            </tr>
+         </ng-template>
+      </p-table>
+   </mat-card-content>
+</mat-card>
