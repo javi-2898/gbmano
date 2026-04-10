@@ -2,9 +2,113 @@
    <h1>Análisis</h1>
 </div>
 
-<div class="col-12 padding flex flex-wrap">
-   <div class="col-3">
+<div class="flex flex-wrap">
+   <div class="col-12">
       <mat-card  class="mt-2" appearance="outlined" style="background: #ffffff;">
+         <mat-card-header>
+            <h2 class="title text-spacing">COMPARATIVA GENERAL</h2>
+         </mat-card-header>
+
+         <mat-card-content>
+            <div class="flex flex-wrap">
+               <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">SKUS</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span class="text-green-700 font-bold">{{ varb.skus | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>{{ varb.filtroSKUS | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>{{ varb.porcSKUS | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+
+               <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">EXISTENCIA</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span class="text-green-700 font-bold">{{ varb.totalExistencia | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>{{ varb.filtroExistencia | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>{{ varb.porcExistencia | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+
+               <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">VENTAS</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span class="text-green-700 font-bold">{{ varb.totalVenta | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>{{ varb.filtroVenta | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>{{ varb.porcVenta | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+
+               <div class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3 mt-2 padding flex flex-wrap">
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">IMPORTE</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span class="text-green-700 font-bold">${{ varb.totalImporte | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">FILTRO</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>${{ varb.filtroImporte | number : '1.0-2' }}</span>
+                  </div>
+
+                  <div class="col-6 padding-3">
+                     <span class="font-bold">PORCENTAJE</span>
+                  </div>
+                  <div class="col-6 padding-3">
+                     <span>{{ varb.porcImporte | number : '1.0-2' }}%</span>
+                  </div>
+               </div>
+            </div>
+         </mat-card-content>
+      </mat-card>
+   </div>
+
+   <div class="col-12 md:col-12 lg:col-12 xl:col-3">
+      <mat-card appearance="outlined" style="background: #ffffff;">
          <mat-card-header>
             <h2 class="title text-spacing">FILTROS</h2>
          </mat-card-header>
@@ -61,110 +165,8 @@
       </mat-card>
    </div>
 
-   <div class="col-9">
-      <mat-card  class="mt-2" appearance="outlined" style="background: #ffffff;">
-         <mat-card-header>
-            <h2 class="title text-spacing">COMPARATIVA GENERAL</h2>
-         </mat-card-header>
-
-         <mat-card-content>
-            <div class="col-12 padding flex flex-wrap">
-               <div class="col-3 mt-2 padding flex flex-wrap">
-                  <div class="col-6 padding">
-                     <span class="font-bold">SKUS</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span class="text-green-700 font-bold">{{ varb.skus | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">FILTRO</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>{{ varb.filtroSKUS | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">PORCENTAJE</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>{{ varb.porcSKUS | number : '1.0-2' }}%</span>
-                  </div>
-               </div>
-
-               <div class="col-3 mt-2 padding flex flex-wrap">
-                  <div class="col-6 padding">
-                     <span class="font-bold">EXISTENCIA</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span class="text-green-700 font-bold">{{ varb.totalExistencia | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">FILTRO</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>{{ varb.filtroExistencia | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">PORCENTAJE</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>{{ varb.porcExistencia | number : '1.0-2' }}%</span>
-                  </div>
-               </div>
-
-               <div class="col-3 mt-2 padding flex flex-wrap">
-                  <div class="col-6 padding">
-                     <span class="font-bold">VENTAS</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span class="text-green-700 font-bold">{{ varb.totalVenta | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">FILTRO</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>{{ varb.filtroVenta | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">PORCENTAJE</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>{{ varb.porcVenta | number : '1.0-2' }}%</span>
-                  </div>
-               </div>
-
-               <div class="col-3 mt-2 padding flex flex-wrap">
-                  <div class="col-6 padding">
-                     <span class="font-bold">IMPORTE</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span class="text-green-700 font-bold">${{ varb.totalImporte | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">FILTRO</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>${{ varb.filtroImporte | number : '1.0-2' }}</span>
-                  </div>
-
-                  <div class="col-6 padding">
-                     <span class="font-bold">PORCENTAJE</span>
-                  </div>
-                  <div class="col-6 padding">
-                     <span>{{ varb.porcImporte | number : '1.0-2' }}%</span>
-                  </div>
-               </div>
-            </div>
-         </mat-card-content>
-      </mat-card>
-
-      <mat-card  class="mt-4" appearance="outlined" style="background: #ffffff;">
+   <div class="col-12 md:col-12 lg:col-12 xl:col-9">
+      <mat-card appearance="outlined" style="background: #ffffff;">
          <mat-card-header>
             <h2 class="title text-spacing mb-2">ROTACION DE PRODUCTOS 60 DIAS DE VENTAS</h2>
          </mat-card-header>
