@@ -171,7 +171,7 @@
          </div>
 
          @if (varb.folioPromo != 0) {
-            <div style="cursor: pointer;" class="col-6 sm:col-3 md:col-2 lg:col-2 xl:col-2" (click)="Open_Dialog_Promociones(varb.folioPromo, varb.tipoPromocion)">
+            <div style="cursor: pointer;" class="col-6 sm:col-3 md:col-2 lg:col-2 xl:col-2" (click)="Open_Dialog_Promociones(varb.folioPromo, varb.tipoPromocion, varb.fechaPromocionI, varb.fechaPromocionF)">
                <div class="flex flex-column">
                   <div class="col-12 flex justify-content-center">
                      <div class="font-bold text-xl">Promoción Folio</div>
@@ -180,20 +180,6 @@
                   <div class="col-12 padding flex justify-content-center">
                      <p-skeleton *ngIf="varb.loading_2" width="5rem" />
                      <div *ngIf="!varb.loading_2" class="text-xl font-bold text-blue-700">{{this.varb.folioPromo}}</div>
-                  </div>
-                  
-                  <div class="col-12 padding flex flex-wrap">
-                     <div class="col-6 flex flex-column">
-                        <div class="text-sm text-center">Fecha Inicio</div>
-                        <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                        <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaPromocionI}}</div>
-                     </div>
-
-                     <div class="col-6 flex flex-column">
-                        <div class="text-sm text-center">Fecha Fin</div>
-                        <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                        <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaPromocionF}}</div>
-                     </div>
                   </div>
                </div>
             </div>

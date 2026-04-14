@@ -1,6 +1,15 @@
 <h2 mat-dialog-title> {{data.title | uppercase}} </h2>
 
 <mat-dialog-content [style]="{padding: '10px 24px'}">
+   <div class="col-12 flex flex-wrap">
+      <div class="col-6 sm:col-4">
+         <span>Fecha Inicio: {{ data.fechaInicio }}</span>
+      </div>
+
+      <div class="col-6 sm:col-4">
+         <span>Fecha Fin: {{ data.fechaFin }}</span>
+      </div>
+   </div>
 
    <p-table #dt size="small"
       showGridlines

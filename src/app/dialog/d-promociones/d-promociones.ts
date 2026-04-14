@@ -31,7 +31,7 @@ export class DPromociones {
    ngOnInit() {
       if (this.fun.Verify_Session()) {
 
-         this.varb.loading = false;
+         this.varb.loading   = false;
          this.varb.loading_2 = false;
          this.varb.message_2 = 'Sin Información';
 

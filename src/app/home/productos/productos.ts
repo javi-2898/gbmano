@@ -332,23 +332,28 @@ export class Productos {
 
 
    // ============================================ DIALOG ============================================ \\
-   Open_Dialog_Promociones (folio:any, tipoPromocion:any) {
-      this.dialog.open(DPromociones, {
-         data: {
-            folio: folio,
-            title: 'Promoción',
-            tipoPromocion: tipoPromocion
-         },
-         width: '80vw',  
-         maxWidth: '100vw',
-         panelClass: 'dialogo-sin-padding'
-      });
+   Open_Dialog_Promociones (folio:any, tipoPromocion:any, fechaInicio:string, fechaFin:string) {
+      const seleccion = window.getSelection()?.toString();
+      if (!seleccion) {
+         this.dialog.open(DPromociones, {
+            data: {
+               fechaFin: fechaFin,
+               fechaInicio: fechaInicio,
+               folio: folio,
+               title: 'Promoción',
+               tipoPromocion: tipoPromocion
+            },
+            width: '80vw',  
+            maxWidth: '100vw',
+            panelClass: 'dialogo-sin-padding'
+         });
+      }
    }
 
 
    // ============================================ FUNCIONES ============================================ \\
    Cargar_Fun_Read () {
-      this.varb.loading = true;
+      this.varb.loading   = true;
       this.varb.loading_2 = true;
       this.varb.loading_3 = true;
 
