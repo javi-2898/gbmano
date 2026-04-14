@@ -1,0 +1,58 @@
+<h2 mat-dialog-title> {{data.title | uppercase}} </h2>
+
+<mat-dialog-content [style]="{padding: '10px 24px'}">
+
+   <p-table #dt size="small"
+      showGridlines
+      [value]="varb.table"
+      [loading]="varb.loading"
+   >
+      <ng-template #header>
+         <tr>
+            <th class="text-center">Area</th>
+            <th *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">Orden y Limpieza</th>
+            <th *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">Personal</th>
+            <th *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">Calidad del Producto</th>
+            <th class="text-center">Total</th>
+         </tr>
+      </ng-template>
+
+      <ng-template #body let-item>
+         <tr>
+            <td class="text-center">{{ item.area }}</td>
+            <td *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">{{ item.KPI1 | number: '1.0-2' }} %</td>
+            <td *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">{{ item.KPI2 | number: '1.0-2' }} %</td>
+            <td *ngIf="data.tipo !== 'EJECUCION' ? true : false" class="text-center">{{ item.KPI3 | number: '1.0-2' }} %</td>
+            <td class="text-center">{{ item.Total | number: '1.0-2' }} %</td>
+         </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+         <tr>
+            <td colspan="5">
+               <div class="flex flex-column align-items-center justify-content-center py-4 gap-2">
+                  <img src="undraw/warning.svg" height="150" alt="warning" />
+                  <div class="alert-table">{{varb.message_2}}</div>
+               </div>
+            </td>
+         </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody">
+         <tr>
+            <td colspan="5">
+               <div class="flex flex-col align-items-center justify-content-center py-4 gap-2">
+                  <div class="loader-container">
+                     <div class="loader"></div>
+                     <div class="loader-text">Cargando datos, por favor espere...</div>
+                  </div> 
+               </div>
+            </td>
+         </tr>
+      </ng-template>
+   </p-table>
+</mat-dialog-content>
+
+<mat-dialog-actions class="flex gap-2">
+   <p-button matButton mat-dialog-close label="Cerrar" icon="bi bi-x-circle-fill" severity="danger" [rounded]="true" />
+</mat-dialog-actions>

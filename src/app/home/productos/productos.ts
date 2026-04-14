@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import * as c3 from 'c3';
 import * as d3 from 'd3'; 
@@ -15,6 +16,8 @@ import { Rutas } from "./../../class/rutas";
 
 import { AppService } from "./../../app.service";
 
+import { DPromociones } from "./../../dialog/d-promociones/d-promociones";
+
 @Component({
    selector: 'app-productos',
    imports: [ImportsModules, Material, Primeng],
@@ -23,8 +26,10 @@ import { AppService } from "./../../app.service";
 })
 
 export class Productos {
-   private destroy$ = new Subject<void>();
+   private destroy$       = new Subject<void>();
    private searchSubject$ = new Subject<string>();
+
+   readonly dialog = inject(MatDialog);
 
    ruta = new Rutas;
    varb = new Variables;
@@ -245,18 +250,23 @@ export class Productos {
 
             if (res.code === 200) {
                
-               this.varb.precio = res.data[0].precio_pieza;
-               this.varb.precioTri = res.data[0].precio_tri;
-               this.varb.precioSix = res.data[0].precio_six;
-               this.varb.precioMedio = res.data[0].precio_media;
-               this.varb.precioCaja = res.data[0].precio_caja;
-               this.varb.caja = res.data[0].cont_caja;
-               this.varb.media = res.data[0].cont_med;
-               this.varb.tri = res.data[0].cont_tri;
-               this.varb.six = res.data[0].cont_six;
-               this.varb.precioOfer = res.data[0].Oferta;
-               this.varb.fechaOfertaI = res.data[0].Inicio_Oferta;
-               this.varb.fechaOfertaF = res.data[0].Fin_Oferta;
+               this.varb.existenciaCEDIS = res.data[0].ExistenciaCEDIS;
+               this.varb.precio          = res.data[0].precio_pieza;
+               this.varb.precioTri       = res.data[0].precio_tri;
+               this.varb.precioSix       = res.data[0].precio_six;
+               this.varb.precioMedio     = res.data[0].precio_media;
+               this.varb.precioCaja      = res.data[0].precio_caja;
+               this.varb.caja            = res.data[0].cont_caja;
+               this.varb.media           = res.data[0].cont_med;
+               this.varb.tri             = res.data[0].cont_tri;
+               this.varb.six             = res.data[0].cont_six;
+               this.varb.precioOfer      = res.data[0].Oferta;
+               this.varb.fechaOfertaI    = res.data[0].Inicio_Oferta;
+               this.varb.fechaOfertaF    = res.data[0].Fin_Oferta;
+               this.varb.folioPromo      = res.data[0].Folio_Promo
+               this.varb.fechaPromocionF = res.data[0].Fin_Promo;
+               this.varb.fechaPromocionI = res.data[0].Inicio_Promo;
+               this.varb.tipoPromocion   = res.data[0].Tipo_Promo;
 
             } else {
                this.fun.Swal_Advertencia(res.message);
@@ -319,6 +329,22 @@ export class Productos {
          })
       );
    }
+
+
+   // ============================================ DIALOG ============================================ \\
+   Open_Dialog_Promociones (folio:any, tipoPromocion:any) {
+      this.dialog.open(DPromociones, {
+         data: {
+            folio: folio,
+            title: 'Promoción',
+            tipoPromocion: tipoPromocion
+         },
+         width: '80vw',  
+         maxWidth: '100vw',
+         panelClass: 'dialogo-sin-padding'
+      });
+   }
+
 
    // ============================================ FUNCIONES ============================================ \\
    Cargar_Fun_Read () {

@@ -66,8 +66,10 @@ export class Variables {
    filtroImporte: any = 0;
    filtroSKUS: any = 0;
    filtroVenta: any = 0;
+   folioPromo: any = 0;
    existencia: any = 0;
    existencia2: any = 0;
+   existenciaCEDIS: any = 0;
    inventario: any = 0;
    kpi1: any = 0;
    kpi2: any = 0;
@@ -80,13 +82,13 @@ export class Variables {
    precioMedio: any = 0;
    precioTri: any = 0;
    precioSix: any = 0;
-   precioPromo: any = 0;
    precioOfer: any = 0;
    porcExistencia: any = 0;
    porcImporte: any = 0;
    porcSKUS: any = 0;
    porcVenta: any = 0;
    rotacion: any = 0;
+   tipoPromocion: any = 0;
    total: any = 0.0;
    totalExistencia: any = 0;
    totalImporte: any = 0;

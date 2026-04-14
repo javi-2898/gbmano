@@ -29,8 +29,8 @@
    </mat-card-header>
 
    <mat-card-content>
-      <div class="flex flex-wrap">
-         <div class="col-6 sm:col-3 md:col-3 lg:col-3 xl:col-3">
+      <div class="flex flex-wrap justify-content-center">
+         <div class="col-6 sm:col-4 md:col-3 lg:col-2 xl:col-2">
             <div class="flex flex-column">
                <div class="col-12 flex justify-content-center">
                   <div class="font-bold text-xl">Existencia</div>
@@ -43,7 +43,7 @@
             </div>
          </div>
 
-         <div class="col-6 sm:col-3 md:col-3 lg:col-3 xl:col-3">
+         <div class="col-6 sm:col-4 md:col-3 lg:col-2 xl:col-2">
             <div class="flex flex-column">
                <div class="col-12 flex justify-content-center">
                   <div class="font-bold text-xl">Ventas 60 días</div>
@@ -56,7 +56,7 @@
             </div>
          </div>
 
-         <div class="col-6 sm:col-3 md:col-3 lg:col-3 xl:col-3">
+         <div class="col-6 sm:col-4 md:col-3 lg:col-2 xl:col-2">
             <div class="flex flex-column">
                <div class="col-12 flex justify-content-center">
                   <div class="font-bold text-xl">Rotación</div>
@@ -69,7 +69,7 @@
             </div>
          </div>
 
-         <div class="col-6 sm:col-3 md:col-3 lg:col-3 xl:col-3">
+         <div class="col-6 sm:col-4 md:col-3 lg:col-2 xl:col-2">
             <div class="flex flex-column">
                <div class="col-12 flex justify-content-center">
                   <div class="font-bold text-xl">Días Inventario</div>
@@ -78,6 +78,19 @@
                <div class="col-12 padding flex justify-content-center">
                   <p-skeleton *ngIf="varb.loading" width="5rem" />
                   <div *ngIf="!varb.loading" class="text-xl font-bold text-blue-700">{{this.varb.inventario | number : '1.0-2'}}</div>
+               </div>
+            </div>
+         </div>
+
+         <div class="col-6 sm:col- md:col-3 lg:col-2 xl:col-2">
+            <div class="flex flex-column">
+               <div class="col-12 flex justify-content-center">
+                  <div class="font-bold text-xl">Existencia CEDIS</div>
+               </div>
+
+               <div class="col-12 padding flex justify-content-center">
+                  <p-skeleton *ngIf="varb.loading" width="5rem" />
+                  <div *ngIf="!varb.loading" class="text-lg font-bold text-blue-700">{{this.varb.existenciaCEDIS | number : '1.0-2'}}</div>
                </div>
             </div>
          </div>
@@ -157,59 +170,63 @@
             </div>
          </div>
 
-         <div *ngIf="varb.precioPromo == 0 ? false : true" class="col-6 sm:col-3 md:col-2 lg:col-2 xl:col-2">
-            <div class="flex flex-column">
-               <div class="col-12 flex justify-content-center">
-                  <div class="font-bold text-xl">Promoción</div>
-               </div>
-
-               <div class="col-12 padding flex justify-content-center">
-                  <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                  <div *ngIf="!varb.loading_2" class="text-xl font-bold text-blue-700">${{this.varb.precioPromo | number : '1.0-2'}}</div>
-               </div>
-               
-               <div class="col-12 padding flex flex-wrap">
-                  <div class="col-6 flex flex-column">
-                     <div class="text-sm text-center">Fecha Inicio</div>
-                     <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                     <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaPromocionI}}</div>
+         @if (varb.folioPromo != 0) {
+            <div style="cursor: pointer;" class="col-6 sm:col-3 md:col-2 lg:col-2 xl:col-2" (click)="Open_Dialog_Promociones(varb.folioPromo, varb.tipoPromocion)">
+               <div class="flex flex-column">
+                  <div class="col-12 flex justify-content-center">
+                     <div class="font-bold text-xl">Promoción Folio</div>
                   </div>
 
-                  <div class="col-6 flex flex-column">
-                     <div class="text-sm text-center">Fecha Fin</div>
+                  <div class="col-12 padding flex justify-content-center">
                      <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                     <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaPromocionF}}</div>
+                     <div *ngIf="!varb.loading_2" class="text-xl font-bold text-blue-700">{{this.varb.folioPromo}}</div>
                   </div>
-               </div>
-            </div>
-         </div>
+                  
+                  <div class="col-12 padding flex flex-wrap">
+                     <div class="col-6 flex flex-column">
+                        <div class="text-sm text-center">Fecha Inicio</div>
+                        <p-skeleton *ngIf="varb.loading_2" width="5rem" />
+                        <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaPromocionI}}</div>
+                     </div>
 
-         <div *ngIf="varb.precioOfer == 0 ? false : true" class="col-6 sm:col-3 md:col-2 lg:col-2 xl:col-2">
-            <div class="flex flex-column">
-               <div class="col-12 flex justify-content-center">
-                  <div class="font-bold text-xl">Oferta</div>
-               </div>
-
-               <div class="col-12 padding flex justify-content-center">
-                  <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                  <div *ngIf="!varb.loading_2" class="text-xl font-bold text-blue-700">${{this.varb.precioOfer | number : '1.0-2'}}</div>
-               </div>
-
-               <div class="col-12 padding flex flex-wrap">
-                  <div class="col-6 flex flex-column">
-                     <div class="text-sm text-center">Fecha Inicio</div>
-                     <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                     <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaOfertaI}}</div>
-                  </div>
-
-                  <div class="col-6 flex flex-column">
-                     <div class="text-sm text-center">Fecha Fin</div>
-                     <p-skeleton *ngIf="varb.loading_2" width="5rem" />
-                     <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaOfertaF}}</div>
+                     <div class="col-6 flex flex-column">
+                        <div class="text-sm text-center">Fecha Fin</div>
+                        <p-skeleton *ngIf="varb.loading_2" width="5rem" />
+                        <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaPromocionF}}</div>
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
+         }
+
+         @if (varb.precioOfer != 0) {
+            <div class="col-6 sm:col-3 md:col-2 lg:col-2 xl:col-2">
+               <div class="flex flex-column">
+                  <div class="col-12 flex justify-content-center">
+                     <div class="font-bold text-xl">Oferta</div>
+                  </div>
+
+                  <div class="col-12 padding flex justify-content-center">
+                     <p-skeleton *ngIf="varb.loading_2" width="5rem" />
+                     <div *ngIf="!varb.loading_2" class="text-xl font-bold text-blue-700">${{this.varb.precioOfer | number : '1.0-2'}}</div>
+                  </div>
+
+                  <div class="col-12 padding flex flex-wrap">
+                     <div class="col-6 flex flex-column">
+                        <div class="text-sm text-center">Fecha Inicio</div>
+                        <p-skeleton *ngIf="varb.loading_2" width="5rem" />
+                        <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaOfertaI}}</div>
+                     </div>
+
+                     <div class="col-6 flex flex-column">
+                        <div class="text-sm text-center">Fecha Fin</div>
+                        <p-skeleton *ngIf="varb.loading_2" width="5rem" />
+                        <div *ngIf="!varb.loading_2" class="text-sm text-center">{{varb.fechaOfertaF}}</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         }
       </div>
    </mat-card-content>
 </mat-card>

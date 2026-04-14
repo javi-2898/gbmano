@@ -7,7 +7,6 @@ import { KnobModule } from "primeng/knob";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
-
 import { ImportsModules } from "./../../class/modules";
 import { Material } from "./../../class/material";
 import { Primeng } from "./../../class/primeng";
