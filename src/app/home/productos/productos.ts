@@ -266,7 +266,7 @@ export class Productos {
                this.varb.folioPromo      = res.data[0].Folio_Promo
                this.varb.fechaPromocionF = res.data[0].Fin_Promo;
                this.varb.fechaPromocionI = res.data[0].Inicio_Promo;
-               this.varb.tipoPromocion   = res.data[0].Tipo_Promo;
+               this.varb.tipoPromocion   = Number(res.data[0].Tipo_Promo);
 
             } else {
                this.fun.Swal_Advertencia(res.message);
