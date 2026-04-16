@@ -15,17 +15,21 @@ h5 {
    overflow-x: hidden;
    -ms-overflow-style: none;  /* IE y Edge */
    scrollbar-width: none;     /* Firefox */
-   width: 270px;
+   width: 230px;
    height: 100%;
    background: var(--color-primary);
-   border-left: 10px solid var(--color-primary);
+   border-left: 5px solid var(--color-primary);
    border-top-right-radius: 20px;
    border-bottom-right-radius: 20px;
    transition: var(--transition);
 }
 
 .navigation.active {
-   width: 80px;
+   width: 65px;
+}
+
+.navigation.active a .arrow {
+   right: 8px !important;
 }
 
 .navigation ul {
@@ -68,9 +72,9 @@ h5 {
 .navigation ul li a .icon {
    position: relative;
    display: block;
-   min-width: 60px;
-   height: 60px;
-   line-height: 60px;
+   min-width: 55px;
+   height: 55px;
+   line-height: 55px;
    text-align: center;
 }
 
@@ -95,7 +99,7 @@ h5 {
 .navigation ul li a .title {
    position: relative;
    display: block;
-   padding: 0 10px;
+   padding: 0 5px;
    height: 60px;
    line-height: 60px;
    text-align: start;
@@ -108,11 +112,11 @@ h5 {
    position: absolute;
    right: 0;
    top: -50px;
-   width: 50px;
+   width: 40px;
    height: 50px;
    background-color: transparent;
    border-radius: 50%;
-   box-shadow: 35px 35px 0 10px var(--background);
+   box-shadow: 30px 30px 0 10px var(--background);
    pointer-events: none;
 }
 
@@ -121,11 +125,11 @@ h5 {
    position: absolute;
    right: 0;
    bottom: -50px;
-   width: 50px;
+   width: 40px;
    height: 50px;
    background-color: transparent;
    border-radius: 50%;
-   box-shadow: 35px -35px 0 10px var(--background);
+   box-shadow: 30px -30px 0 10px var(--background);
    pointer-events: none;
 }
 
@@ -142,7 +146,7 @@ h5 {
    cursor: pointer;
    max-height: 0;
    overflow: hidden;
-   margin-left: 10px;
+   margin-left: 15px;
    border-radius: 20px 0 0 20px;
 }
 
@@ -167,6 +171,7 @@ h5 {
 .submenu li a .title {
    height: 45px !important;
    line-height: 45px !important;
+   padding: 0 15px !important;
 }
 
 /* Evitar que el efecto curve-outside se aplique mal en submenús */
@@ -178,9 +183,9 @@ h5 {
 /* ===================== Main ===================== */
 .main {
    position: absolute;
-   width: calc(100% - 270px);
+   width: calc(100% - 230px);
    height: 100vh;
-   left: 270px;
+   left: 230px;
    min-height: 100vh;
    background: var(--background);
    transition: var(--transition);
@@ -188,8 +193,8 @@ h5 {
 }
 
 .main.active {
-   width: calc(100% - 80px);
-   left: 80px;
+   width: calc(100% - 75px);
+   left: 75px;
 }
 
 
@@ -296,14 +301,14 @@ h5 {
    .navigation {
       left: 0;
       transform: translateX(-100%); 
-      width: 270px;
+      width: 230px;
       z-index: 1000;
       will-change: transform; /* Optimizaciones de rendimiento */
       transition: transform 0.3s ease-out; /* Animación suave */
    }
 
    .navigation.active {
-      width: 270px;
+      width: 230px;
       left: 0;
       transform: translateX(0); 
       box-shadow: 5px 0 15px rgba(0,0,0,0.2);

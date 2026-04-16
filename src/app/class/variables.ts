@@ -1,6 +1,6 @@
 export class Variables {
-   public static url = "http://localhost:80/core/core_gbmano/";
-   //public static url = "core_gbmano/";
+   //public static url = "http://localhost:80/core/core_gbmano/";
+   public static url = "core_gbmano/";
    demo: boolean = false;
    
    selectFile: File | null = null;

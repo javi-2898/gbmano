@@ -59,8 +59,8 @@ export class DMermaGrupo {
 
       let datos = this.data.formato != undefined ? 
          {
+            cve_sucursal: this.data.cve_sucursal,
             cve_familia: this.data.cve_familia,
-            formato: this.data.formato,
             month: this.data.month,
             year: this.data.year
          } 
@@ -104,8 +104,8 @@ export class DMermaGrupo {
 
       let datos = this.data.formato != undefined ? 
          {
+            cve_sucursal: this.data.cve_sucursal,
             cve_familia: this.data.cve_familia,
-            formato: this.data.formato,
             month: this.data.month,
             year: this.data.year
          } 
@@ -148,6 +148,7 @@ export class DMermaGrupo {
    Open_Dialog_Merma (data:any) {
       this.dialog.open(DMerma, {
          data: {
+            cve_sucursal: this.data.cve_sucursal,
             cve_familia: this.data.cve_familia,
             cve_producto: data.cve_producto,
             formato: this.data.formato,

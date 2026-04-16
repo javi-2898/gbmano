@@ -93,13 +93,12 @@ export class Dashboard {
             if (res.code === 200) {
                this.varb.DDI = res.data[0].DDI;
             } else {
-               this.fun.Swal_Advertencia(res.message);
-
+               this.fun.Swal_Advertencia(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_6 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Días Inventario');
             return of(null);
          })
       );
@@ -139,19 +138,24 @@ export class Dashboard {
                   this.Grafica([yearActual, yearAnterior]);
                }, 0);
                
+            } else if (res.code === 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
+               this.fun.Swal_Error(res.message, res.evento);
+            }
+
+            if (res.code !== 200) {
 
                this.Grafica([
                   [String(this.varb.selectYear.Year), 0, 0, 0, 0, 0, 0],
                   [String(this.varb.selectYear.Year - 1), 0, 0, 0, 0, 0, 0]
                ]);
-               this.fun.Swal_Advertencia(res.message);
 
             }
          }),
          catchError((error) => {
             this.varb.loading_2 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Graficas Ventas');
             return of(null);
          })
       );
@@ -172,13 +176,15 @@ export class Dashboard {
 
             if (res.code === 200) {
                this.varb.precioAplicar = res.data[0];
+            } else if (res.code === 201) {
+               this.fun.Swal_Error(res.message, res.evento);
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Advertencia(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_3 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Precios Aplicar');
             return of(null);
          })
       );
@@ -221,12 +227,12 @@ export class Dashboard {
                this.varb.message = res.message;
 
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Tabla');
             return of(null);
          })
       );
@@ -249,13 +255,15 @@ export class Dashboard {
 
             if (res.code === 200) {
                this.varb.tickets = res.data[0];
+            } else if (res.code === 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_4 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Tickets');
             return of(null);
          })
       );
@@ -277,13 +285,15 @@ export class Dashboard {
             if (res.code === 200) {
                this.varb.crecimientoYTD = res.data[0].Crecimiento;
                this.varb.ventaYTD = res.data[0].VentaYTD;
+            } else if (res.code == 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_5 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Ventas YTD VS AA');
             return of(null);
          })
       );

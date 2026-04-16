@@ -372,6 +372,7 @@ export class DIndicador {
       this.dialog.open(DMermaGrupo, {
          data: {
             cve_familia: data.cve_familia,
+            cve_sucursal: this.data.cve_sucursal,
             formato: this.data.formato,
             title: this.data.title,
             title_sub: data.descripcion,

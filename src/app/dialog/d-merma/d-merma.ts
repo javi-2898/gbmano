@@ -57,9 +57,10 @@ export class DMerma {
 
       let datos = this.data.formato != undefined ? 
          {
+            cve_sucursal: this.data.cve_sucursal,
             cve_familia: this.data.cve_familia,
             cve_producto: this.data.cve_producto,
-            formato: this.data.formato,
+            //formato: this.data.formato,
             month: this.data.month,
             year: this.data.year
          } 
@@ -104,9 +105,10 @@ export class DMerma {
 
       let datos = this.data.formato != undefined ? 
          {
+            cve_sucursal: this.data.cve_sucursal,
             cve_familia: this.data.cve_familia,
             cve_producto: this.data.cve_producto,
-            formato: this.data.formato,
+            //formato: this.data.formato,
             month: this.data.month,
             year: this.data.year
          } 

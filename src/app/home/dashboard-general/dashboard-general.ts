@@ -90,14 +90,15 @@ export class DashboardGeneral {
             this.varb.loading_6 = false;
             if (res.code === 200) {
                this.varb.DDI = res.data[0].DDI;
+            } else if (res.code === 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
-               this.fun.Swal_Advertencia(res.message);
-
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_6 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Días Inventario');
             return of(null);
          })
       );
@@ -137,19 +138,22 @@ export class DashboardGeneral {
                   this.Grafica([yearActual, yearAnterior]);
                }, 0);
                
+            } else if (res.code === 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
+               this.fun.Swal_Error(res.message, res.evento);
+            }
 
+            if (res.code !== 200) {
                this.Grafica([
                   [String(this.varb.selectYear.Year), 0, 0, 0, 0, 0, 0],
                   [String(this.varb.selectYear.Year - 1), 0, 0, 0, 0, 0, 0]
                ]);
-               this.fun.Swal_Advertencia(res.message);
-
             }
          },
          error: (error) => {
             this.varb.loading_2 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Grafica Ventas');
          }
       });
    }
@@ -169,13 +173,15 @@ export class DashboardGeneral {
 
             if (res.code === 200) {
                this.varb.precioAplicar = res.data[0];
+            } else if (res.code == 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_3 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Precios Aplicar');
             return of(null);
          })
       );
@@ -196,12 +202,14 @@ export class DashboardGeneral {
          next: (res) => {
             if (res.code === 200) {
                this.varb.regiones = res.data;
-            }  else {
-               this.fun.Swal_Advertencia(res.message);
+            } else if (res.code == 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
+            } else {
+               this.fun.Swal_Error(res.message, res.evento);
             }
          },
          error: (error) => {
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Regiones');
          }
       });
    }
@@ -245,12 +253,12 @@ export class DashboardGeneral {
                this.varb.message       = res.message;
 
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Tabla');
             return of(null);
          })
       );
@@ -273,13 +281,15 @@ export class DashboardGeneral {
 
             if (res.code === 200) {
                this.varb.tickets = res.data[0];
+            } else if (res.code === 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_4 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Tickets');
             return of(null);
          })
       );
@@ -300,12 +310,14 @@ export class DashboardGeneral {
          next: (res) => {
             if (res.code === 200) {
                this.varb.formato = res.data;
-            }  else {
-               this.fun.Swal_Advertencia(res.message);
+            } else if (res.code == 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
+            } else {
+               this.fun.Swal_Error(res.message, res.evento);
             }
          },
          error: (error) => {
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Tipo Sucursal');
          }
       });
    }
@@ -326,13 +338,15 @@ export class DashboardGeneral {
             if (res.code === 200) {
                this.varb.crecimientoYTD = res.data[0].Crecimiento;
                this.varb.ventaYTD       = res.data[0].VentaYTD;
+            } else if (res.code == 201) {
+               this.fun.Swal_Advertencia(res.message, res.evento);
             } else {
-               this.fun.Swal_Advertencia(res.message);
+               this.fun.Swal_Error(res.message, res.evento);
             }
          }),
          catchError((error) => {
             this.varb.loading_5 = false;
-            this.fun.Swal_Error(error.message);
+            this.fun.Swal_Error(error.message, 'Venta YTD VS AA');
             return of(null);
          })
       );
@@ -363,8 +377,6 @@ export class DashboardGeneral {
       this.varb.loading_5 = true;
       this.varb.loading_6 = true;
 
-      this.Read_Grafica_Ventas();
-
       this.Read_Tabla().pipe(
          switchMap(() => this.Read_Ventas_YTD_VS_AA()),
          switchMap(() => this.Read_Dias_Inventario()),
@@ -374,6 +386,8 @@ export class DashboardGeneral {
          complete: () => {
          }
       });
+
+      this.Read_Grafica_Ventas();
    }
 
    Grafica (column:any) {
