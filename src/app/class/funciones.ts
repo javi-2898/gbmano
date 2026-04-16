@@ -303,9 +303,9 @@ export class Funciones {
       });
    }
 
-   Swal_Error (message:string) {
+   Swal_Error (message:string, title = 'Error') {
       Swal.fire({
-         title: "Error",
+         title: title,
          text: message,
          icon: 'error',
          cancelButtonText: "<i class='bi bi-x-circle'></i> Cerrar",

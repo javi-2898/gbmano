@@ -57,6 +57,8 @@ export class Variables {
 
    almacen: any = 0;
    caja: any = 24;
+   cantidad: any = 0;
+   cantidadMonto: any = 0;
    califGeneral: any = 0.0;
    crecimiento: any = 0.0;
    crecimientoYTD: any = 0.0;

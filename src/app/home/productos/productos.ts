@@ -250,23 +250,23 @@ export class Productos {
 
             if (res.code === 200) {
                
-               this.varb.existenciaCEDIS = res.data[0].ExistenciaCEDIS;
-               this.varb.precio          = res.data[0].precio_pieza;
-               this.varb.precioTri       = res.data[0].precio_tri;
-               this.varb.precioSix       = res.data[0].precio_six;
-               this.varb.precioMedio     = res.data[0].precio_media;
-               this.varb.precioCaja      = res.data[0].precio_caja;
                this.varb.caja            = res.data[0].cont_caja;
-               this.varb.media           = res.data[0].cont_med;
-               this.varb.tri             = res.data[0].cont_tri;
-               this.varb.six             = res.data[0].cont_six;
-               this.varb.precioOfer      = res.data[0].Oferta;
+               this.varb.existenciaCEDIS = res.data[0].ExistenciaCEDIS;
                this.varb.fechaOfertaI    = res.data[0].Inicio_Oferta;
                this.varb.fechaOfertaF    = res.data[0].Fin_Oferta;
                this.varb.folioPromo      = res.data[0].Folio_Promo
                this.varb.fechaPromocionF = res.data[0].Fin_Promo;
                this.varb.fechaPromocionI = res.data[0].Inicio_Promo;
+               this.varb.media           = res.data[0].cont_med;
+               this.varb.precio          = res.data[0].precio_pieza;
+               this.varb.precioTri       = res.data[0].precio_tri;
+               this.varb.precioSix       = res.data[0].precio_six;
+               this.varb.precioMedio     = res.data[0].precio_media;
+               this.varb.precioCaja      = res.data[0].precio_caja;
+               this.varb.precioOfer      = res.data[0].Oferta;
+               this.varb.tri             = res.data[0].cont_tri;
                this.varb.tipoPromocion   = Number(res.data[0].Tipo_Promo);
+               this.varb.six             = res.data[0].cont_six;
 
             } else {
                this.fun.Swal_Advertencia(res.message);
@@ -335,12 +335,24 @@ export class Productos {
    Open_Dialog_Promociones (folio:any, tipoPromocion:any, fechaInicio:string, fechaFin:string) {
       const seleccion = window.getSelection()?.toString();
       if (!seleccion) {
+         let titleType:any = {
+            1: 'Promocion cantidad producto',
+            2: 'Promocion armada',
+            3: 'Promocion multiplicador', 
+            4: 'Promocion por monto',
+            5: 'Promocion Cantidad Precio',
+            6: 'Promocion cantidad monto',
+            7: 'Promocion comprar x regalar y'
+         };
+
          this.dialog.open(DPromociones, {
             data: {
+               cveProducto: this.varb.productos.cve_producto,
+               cveSucursal: this.varb.sucursal.cve_sucursal,
                fechaFin: fechaFin,
                fechaInicio: fechaInicio,
                folio: folio,
-               title: 'Promoción',
+               title: titleType[tipoPromocion],
                tipoPromocion: tipoPromocion
             },
             width: '80vw',  
