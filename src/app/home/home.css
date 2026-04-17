@@ -193,8 +193,8 @@ h5 {
 }
 
 .main.active {
-   width: calc(100% - 75px);
-   left: 75px;
+   width: calc(100% - 65px);
+   left: 65px;
 }
 
 
