@@ -67,6 +67,7 @@ export class DPromociones {
 
                this.varb.cantidad      = res.cabecero.unidades_cobrar;
                this.varb.cantidadMonto = res.cabecero.unidades_dar;
+               this.varb.precio        = res.cabecero.precio_cobrar;
                this.varb.table         = res.detalle;
                this.varb.table_2       = res.detalle_2;
 

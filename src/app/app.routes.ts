@@ -9,6 +9,7 @@ import { DashboardGeneral } from "./home/dashboard-general/dashboard-general";
 import { Encuestas } from "./home/encuestas/encuestas";
 import { Evaluaciones } from "./home/evaluaciones/evaluaciones";
 import { GuiasEjecucion } from "./home/guias-ejecucion/guias-ejecucion";
+import { HojasServicios } from "./home/hojas-servicios/hojas-servicios";
 import { MonitorOfertas } from "./home/monitor-ofertas/monitor-ofertas";
 import { PowerBi } from "./home/power-bi/power-bi";
 import { ProduccionPanaderia } from "./home/produccion-panaderia/produccion-panaderia";
@@ -31,6 +32,7 @@ export const routes: Routes = [
          { path:  'encuestas', title: 'Encuestas | GBMANO', component: Encuestas },
          { path:  'evaluaciones', title: 'Evaluaciones | GBMANO', component: Evaluaciones },
          { path:  'guias_ejecucion', title: 'Guías de Ejecución | GBMANO', component: GuiasEjecucion },
+         { path:  'hojas_servicios', title: 'Hojas de Servicios | GBMANO', component: HojasServicios },
          { path:  'monitor_ofertas', title: 'Monitor Ofertas | GBMANO', component: MonitorOfertas },
          { path:  'power_bi', title: 'Power BI | GBMANO', component: PowerBi },
          { path:  'produccion_panaderia', title:'Producción Panadería | GBMANO', component: ProduccionPanaderia },

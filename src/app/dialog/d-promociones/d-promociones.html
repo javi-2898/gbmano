@@ -23,14 +23,20 @@
             <input type="text" class="w-full" pInputText [(ngModel)]="varb.cantidad" readonly="true" />
          </div>
 
-         @if (![1].includes(data.tipoPromocion)) {
+         @if (![1, 3].includes(data.tipoPromocion)) {
             <div class="col-6 sm:col-4 md:col-4 lg:col-4 xl:col-3">
                <span>Monto a Cobrar: </span>
-               <input type="text" class="w-full" pInputText [(ngModel)]="varb.cantidadMonto" readonly="true" />
+               <p-inputgroup>
+                  <p-inputgroup-addon>
+                     <i class="bi bi-currency-dollar"></i>
+                  </p-inputgroup-addon>
+                  
+                  <input type="text" class="w-full" pInputText [(ngModel)]="varb.precio" readonly="true" />
+               </p-inputgroup>
             </div>
          }
 
-         @if ([1].includes(data.tipoPromocion)) {
+         @if ([1, 3].includes(data.tipoPromocion)) {
             <div class="col-6 sm:col-4 md:col-4 lg:col-4 xl:col-3">
                <span>Cantidad Productos a Regalar:</span>
                <input type="text" class="w-full" pInputText [(ngModel)]="varb.cantidadMonto" readonly="true" />
@@ -88,7 +94,7 @@
                      <td class="text-center">{{ item.cve_producto }}</td>
                      <td class="text-center">{{ item.cve_presentacion }}</td>
                      <td class="text-center">{{ item.descripcion }}</td>
-                     <td class="text-center">{{ item.unidades_cobrar | currency:'MXN':'symbol-narrow':'1.0-2' }}</td>
+                     <td class="text-center">{{ item.unidades_cobrar | number:'1.0-2' }}</td>
                      <td class="text-center">{{ item.precio_cobrar | currency:'MXN':'symbol-narrow':'1.0-2' }}</td>
                      <td class="text-center">{{ item.aportar | currency:'MXN':'symbol-narrow':'1.0-2' }}</td>
                   </tr>
