@@ -68,6 +68,7 @@ export class DPromociones {
                this.varb.cantidad      = res.cabecero.unidades_cobrar;
                this.varb.cantidadMonto = res.cabecero.unidades_dar;
                this.varb.table         = res.detalle;
+               this.varb.table_2       = res.detalle_2;
 
             } else if (res.code === 201) {
                this.varb.message = res.message;
