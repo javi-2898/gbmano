@@ -6,6 +6,7 @@ export class Rutas {
    encuestas           = "controller/encuestas.php";
    evaluaciones        = "controller/evaluaciones.php";
    general             = "controller/general.php";
+   hojasServicios      = "controller/hojas_servicios.php";
    login               = "controller/login.php";
    marca               = "controller/marca.php";
    monitor             = "controller/monitor_ofertas.php";

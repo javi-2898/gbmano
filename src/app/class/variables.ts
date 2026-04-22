@@ -126,7 +126,7 @@ export class Variables {
    formatos: string        = "";
    horaFin: string         = "";
    horaInicio: string      = "";
-   message: string         = "";
+   message: string         = "Sin Información";
    message_2: string       = "";
    storageSesion: string   = "GB_Mano_Sesion";
    storageSucursal: string = "GB_Mano_Sucursal";
