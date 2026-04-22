@@ -5,47 +5,50 @@
 <mat-card class="mt-4" appearance="outlined" style="background: #ffffff; box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
    <mat-card-content>
       <div class="flex flex-wrap gap-2">
-            <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-2">
-            <div class="flex items-center mb-2">
-               <p-radiobutton name="formatos" value="sinTermiar" inputId="ingredient1" [(ngModel)]="varb.formatos" (onClick)="Read_Hojas_Servicios_Sin_Terminar()" />
-               <label for="ingredient1" class="ml-2 font-bold">Sin Terminar</label>
+          @if (varb.view) {
+            <div class="col-4 padding">
+               <label for="sucursal" class="font-bold">Sucursal</label>
+               <p-select optionLabel="nombre" filterBy="nombre" placeholder="Seleccionar" class="w-full"
+                  [options]="varb.sucursales"
+                  [(ngModel)]="varb.selectSuc"
+                  [filter]="true"
+                  [showClear]="true" 
+                  [disabled]="(varb.user.cve_sucursal !== '99') ? true : false"
+                  emptyMessage="Sin opciones disponibles."
+                  emptyFilterMessage="No se encontraron resultados."
+               >
+                  <ng-template #selectedItem let-selectedOption>
+                     <div class="flex items-center gap-2">
+                        <div>{{ selectedOption.nombre }}</div>
+                     </div>
+                  </ng-template>
+      
+                  <ng-template let-suc #item>
+                     <div class="flex items-center gap-2">
+                        <div>{{ suc.nombre }}</div>
+                     </div>
+                  </ng-template>
+               </p-select>
+
+               <p-message *ngIf="varb.alert" severity="error" variant="simple">
+                  <div [innerHTML]="varb.message"></div>
+               </p-message>
             </div>
 
-            <div class="flex items-center">
-               <p-radiobutton name="formatos" value="terminadas" inputId="ingredient2" [(ngModel)]="varb.formatos" (onClick)="varb.table = []" />
-               <label for="ingredient2" class="ml-2 font-bold">Terminadas</label>
-            </div>
+            <div class="col-2 padding">
+               <label for="ingredient1" class="font-bold">Fecha Inicio Apertura</label>
+               <input type="date" class="w-full" pInputText [(ngModel)]="varb.fecha" />
             </div>
 
-            <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-4">
-            <span class="font-bold">Sucursal</span>
-            <p-select optionLabel="nombre" filterBy="nombre" placeholder="Seleccionar" class="w-full"
-               [options]="varb.sucursales"
-               [(ngModel)]="varb.selectSuc"
-               [filter]="true"
-               [showClear]="true" 
-               [disabled]="(varb.user.cve_sucursal !== '99') ? true : false"
-               emptyMessage="Sin opciones disponibles."
-               emptyFilterMessage="No se encontraron resultados."
-            >
-               <ng-template #selectedItem let-selectedOption>
-                  <div class="flex items-center gap-2">
-                     <div>{{ selectedOption.nombre }}</div>
-                  </div>
-               </ng-template>
-   
-               <ng-template let-suc #item>
-                  <div class="flex items-center gap-2">
-                     <div>{{ suc.nombre }}</div>
-                  </div>
-               </ng-template>
-            </p-select>
+            <div class="col-2 padding">
+               <label for="ingredient2" class="font-bold">Fecha Fin Apertura</label>
+               <input type="date" class="w-full" pInputText [(ngModel)]="varb.fechaFin" />
+            </div>
 
-            <p-message *ngIf="varb.alert" severity="error" variant="simple">
-               <div [innerHTML]="varb.message"></div>
-            </p-message>
-         
-         </div>
+            <div class="col-2 padding flex">
+               <p-button label="Buscar" icon="bi bi-search" class="mtm-3" severity="success" (onClick)="Read_Hojas_Servicios_Terminadas()" />
+            </div>
+         }
       </div>
 
       <!-- =================================== TABLA =================================== -->
@@ -56,22 +59,35 @@
          [loading]="varb.loading"
          [rows]="15"
          [rowsPerPageOptions]="[15, 30, 50, 100]"
-         [globalFilterFields]="['status', 'cve_sucursal', 'folio', 'observaciones', 'cve_presentacion', 'cve_producto', 'precio_oferta', 
-         'descripcion', 'fecha_inicio', 'fecha_fin', 'tipo_promocion_descripcion', 'oferta']"
+         [globalFilterFields]="['falla', 'folio', 'fecha_apertura', 'fecha_asignado', 'hora_apertura', 'hora_asignado', 'prioridad', 
+         'sucursal', 'status']"
          [paginator]="true"
          [customSort]="true"
          [showCurrentPageReport]="true"
          (sortFunction)="fun.customSort($event)"
       >
-         <ng-template #caption>
-            <div class="flex gap-2">
-               <p-iconfield iconPosition="left" class="ml-auto">
-                  <p-inputicon>
-                     <i class="pi pi-search"></i>
-                  </p-inputicon>
-                  <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
-               </p-iconfield>
-            </div>
+         <ng-template #caption>   
+            <div class="flex flex-wrap gap-2">
+               <div class="flex align-items-center gap-2">
+                  <p-radiobutton name="formatos" value="sinTermiar" inputId="ingredient1" [(ngModel)]="varb.formatos" (onClick)="Read_Hojas_Servicios_Sin_Terminar()" />
+                  <label for="ingredient1" class="font-bold">SIN TERMINAR</label>
+               </div>
+
+               <div class="flex align-items-center gap-2">
+                  <p-radiobutton name="formatos" value="terminadas" inputId="ingredient2" [(ngModel)]="varb.formatos" (onClick)="Activar_Inputs()" />
+                  <label for="ingredient2" class="font-bold">TERMINDAS</label>
+               </div>
+
+               <div class="ml-auto">
+                     <p-iconfield iconPosition="left">
+                        <p-inputicon>
+                           <i class="pi pi-search"></i>
+                        </p-inputicon>
+                        <input pInputText type="text" class="w-full" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar..." />
+                     </p-iconfield>
+                  </div>
+               </div>
+         
          </ng-template>
 
          <ng-template #header>
@@ -82,40 +98,40 @@
                      <p-sortIcon field="folio" />
                   </div>
                </th>
-               <th pSortableColumn="observaciones">
+               <th pSortableColumn="falla">
                   <div class="flex justify-content-center gap-1">
                      Descripción
-                     <p-sortIcon field="observaciones" />
+                     <p-sortIcon field="falla" />
                   </div>
                </th>
-               <th pSortableColumn="clave_sucursal">
+               <th pSortableColumn="sucursal">
                   <div class="flex justify-content-center gap-1">
                      Sucursal
-                     <p-sortIcon field="clave_sucursal" />
+                     <p-sortIcon field="sucursal" />
                   </div>
                </th>
-               <th pSortableColumn="cve_presentacion">
+               <th pSortableColumn="fecha_apertura">
                   <div class="flex justify-content-center gap-1">
                      Fecha Apertura
-                     <p-sortIcon field="cve_presentacion" />
+                     <p-sortIcon field="fecha_apertura" />
                   </div>
                </th>
-               <th pSortableColumn="cve_producto">
+               <th pSortableColumn="fecha_asignado">
                   <div class="flex justify-content-center gap-1">
                      Fecha Asignación
-                     <p-sortIcon field="cve_producto" />
+                     <p-sortIcon field="fecha_asignado" />
                   </div>
                </th>
-               <th pSortableColumn="precio_oferta">
-                  <div class="flex justify-content-center gap-1">
-                     Prioridad
-                     <p-sortIcon field="precio_oferta" />
-                  </div>
-               </th>
-               <th pSortableColumn="fecha_inicio">
+               <th pSortableColumn="status">
                   <div class="flex justify-content-center gap-1">
                      Estatus
-                     <p-sortIcon field="fecha_inicio" />
+                     <p-sortIcon field="status" />
+                  </div>
+               </th>
+               <th pSortableColumn="prioridad">
+                  <div class="flex justify-content-center gap-1">
+                     Prioridad
+                     <p-sortIcon field="prioridad" />
                   </div>
                </th>
             </tr>
@@ -124,12 +140,14 @@
          <ng-template #body let-item>
             <tr [classList]="item.status == 'AC' ? 'bg-green': item.status == 'PR' ? 'bg-warn' : item.status == 'TR' ?  'bg-danger' : ''">
                <td class="text-center">{{ item.folio}}</td>
-               <td class="text-center"><textarea rows="3" class="w-full" pTextarea [(ngModel)]="item.falla" style="resize: none" readonly="true"></textarea></td>
+               <td style="width: 40%;" class="text-center"><textarea rows="3" class="w-full" pTextarea [(ngModel)]="item.falla" style="resize: none" readonly="true"></textarea></td>
                <td class="text-center">{{ item.sucursal }}</td>
-               <td class="text-center">{{ item.fecha_apertura }}</td>
-               <td class="text-center">{{ item.fecha_asignacion }}</td>
-               <td class="text-center">{{ item.prioridad }}</td>
+               <td class="text-center">{{ item.fecha_apertura }} <br> {{ item.hora_apertura }}</td>
+               <td class="text-center">{{ item.fecha_asignado }} <br> {{ item.hora_asignado }}</td>
                <td class="text-center">{{ item.status }}</td>
+               <td class="text-center">
+                  <p-tag severity="{{fun.Tag_Priority(item.prioridad)}}" value="{{item.prioridad}}" [rounded]="true" />
+               </td>
             </tr>
          </ng-template>
 

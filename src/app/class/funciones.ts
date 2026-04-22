@@ -71,9 +71,13 @@ export class Funciones {
    Tag_Priority(prioridad:string): string {
       let clase:any = {
          'Activo': 'success',
+         'ALTA': 'success',
+         'BAJA': 'info',
+         'Capturado': 'info',
+         'CRITICA': 'danger',
          'Inactivo': 'danger',
+         'MEDIA': 'warn',
          'Recibido': 'success',
-         'Capturado': 'info'
       };
 
       return clase[prioridad] || 'secondary';
@@ -128,7 +132,6 @@ export class Funciones {
       }
    }
    
-
    toTitulo(texto: string): string {
       if (!texto) return '';
 
