@@ -28,13 +28,15 @@ import { DIndicador } from "./../../dialog/d-indicador/d-indicador";
 })
 
 export class Dashboard {
+   private url      = Variables.url;
    private destroy$ = new Subject<void>();
+
    readonly dialog = inject(MatDialog);
 
    varb = new Variables;
    ruta = new Rutas;
 
-   constructor(private service:AppService, public fun: Funciones) {}
+   constructor (private service:AppService, public fun: Funciones) {}
 
    ngOnInit () {
       if (this.fun.Verify_Session()) {
@@ -388,6 +390,41 @@ export class Dashboard {
    checkScreenSize() {
       // Definimos que 'view' es true si es pantalla pequeña (Móvil)
       this.varb.view = window.innerWidth < 768;
+   }
+   
+
+   Export_PDF () {
+      let form   = document.createElement("form");
+      let input1 = document.createElement("input");
+      let input2 = document.createElement("input");
+      let input3 = document.createElement("input");
+      let input4 = document.createElement("input");
+
+      form.target        = "_blank";
+      form.method        = "POST";
+      form.action        = `${this.url}report/PDF_evaluacion_sucursal.php`;
+      form.style.display = "none";
+      
+      input1.type  = "hidden";
+      input1.name  = "cve_sucursal";
+      input1.value = this.varb.sucursal.cve_sucursal;
+      input2.type  = "hidden";
+      input2.name  = "puntos";
+      input2.value = this.varb.totalPuntos;
+      input3.type  = "hidden";
+      input3.name  = "year";
+      input3.value = this.varb.selectYear.Year;
+      input4.type  = "hidden";
+      input4.name  = "mes";
+      input4.value = this.varb.selectMes.mes;
+
+      form.appendChild(input1);
+      form.appendChild(input2);
+      form.appendChild(input3);
+      form.appendChild(input4);
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
    }
 
    // ============================================ DIALOG ============================================ \\
