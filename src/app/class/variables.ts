@@ -126,8 +126,8 @@ export class Variables {
    formatos: string        = "";
    horaFin: string         = "";
    horaInicio: string      = "";
-   message: string         = "Sin Información";
-   message_2: string       = "";
+   message: string         = "Sin Información.";
+   message_2: string       = "Sin Información.";
    storageSesion: string   = "GB_Mano_Sesion";
    storageSucursal: string = "GB_Mano_Sucursal";
    sucursalesText: string  = "";

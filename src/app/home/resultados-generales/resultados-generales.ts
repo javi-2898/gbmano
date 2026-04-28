@@ -28,7 +28,10 @@ type SucursalData = {
 
 
 export class ResultadosGenerales {
+   private url      = Variables.url;
+
    private destroy$ = new Subject<void>();
+   
    varb = new Variables;
    ruta = new Rutas;
 
@@ -37,11 +40,13 @@ export class ResultadosGenerales {
    ngOnInit() {
       if (this.fun.Verify_Session()) {
 
-         this.varb.loading = false;
-         this.varb.loading_2 = false;
-         this.varb.message = 'Sin Información.';
-         this.varb.message_2 = 'Sin Información.';
-         this.varb.user = this.fun.Get_LocalStorage(this.varb.storageSesion, 'json');
+         this.varb.selectMes    = this.varb.meses[(new Date()).getMonth() - 1];
+         this.varb.selectMesFin = this.varb.meses[(new Date()).getMonth() - 1];
+         this.varb.loading      = false;
+         this.varb.loading_2    = false;
+         this.varb.viewFormato  = false;
+         this.varb.user         = this.fun.Get_LocalStorage(this.varb.storageSesion, 'json');
+
          this.Create_Menu();
          this.Cargar_Fun_Read();
 
@@ -64,7 +69,6 @@ export class ResultadosGenerales {
       .subscribe({
          next: (res) => {
             console.log(res.message);
-            
          }, 
          error: (err) => {
             console.log(err.message);
@@ -74,7 +78,9 @@ export class ResultadosGenerales {
 
    // ============================================ READ ============================================ \\
    Read_General () {
-      let tipo = (this.varb.selectFormato != undefined || this.varb.selectFormato != null) ? this.varb.selectFormato.value : '';
+      this.varb.table = [];
+
+      let tipo   = (this.varb.selectFormato != undefined || this.varb.selectFormato != null) ? this.varb.selectFormato.value : '';
       let region = (this.varb.selectRegion != undefined || this.varb.selectRegion != null) ? this.varb.selectRegion.value : '';
 
       let sendData = {
@@ -97,10 +103,7 @@ export class ResultadosGenerales {
                this.varb.total = res.data[0].Total;
 
             } else if (res.code === 201) {
-            
-               this.varb.table = [];
                this.varb.message = res.message;
-
             } else {
                this.fun.Swal_Advertencia(res.message);
             }
@@ -137,7 +140,9 @@ export class ResultadosGenerales {
    }
 
    Read_Tabla () {
-      let tipo = (this.varb.selectFormato != undefined || this.varb.selectFormato != null) ? this.varb.selectFormato.value : '';
+      this.varb.sucursales = [];
+
+      let tipo   = (this.varb.selectFormato != undefined || this.varb.selectFormato != null) ? this.varb.selectFormato.value : '';
       let region = (this.varb.selectRegion != undefined || this.varb.selectRegion != null) ? this.varb.selectRegion.value : '';
       
       let sendData = {
@@ -161,15 +166,18 @@ export class ResultadosGenerales {
                     this.varb.totalMeses = this.extraerClavesMeses(res.data);
 
                 } else if (res.code === 201) {
-                    this.varb.sucursales = [];
-                    this.varb.totalMeses = [];
-                    this.varb.message_2 = res.message;
+                  this.varb.totalMeses = [];
+                  this.varb.loading_2 = false;
+                  this.varb.message_2 = res.message;
+                    
                 } else {
-                    this.fun.Swal_Advertencia(res.message);
+                  this.varb.loading_2 = false;
+                  this.fun.Swal_Advertencia(res.message);
                 }
 
          }),
          catchError((error) => {
+            this.varb.loading_2 = false;
             this.fun.Swal_Error(error.message);
             return of(null);
          })
@@ -210,25 +218,65 @@ export class ResultadosGenerales {
          takeUntil(this.destroy$)
       ).subscribe({
          complete: () => {
-            this.varb.loading = false;
+            this.varb.loading  = false;
             this.varb.loading_2 = false;
          }
       });
    }
 
    Cargar_Search_Read () {
-      this.varb.loading = true;
-      this.varb.loading_2 = true;
+      if (this.varb.selectMes.value == (new Date().getMonth() + 1) && this.varb.selectYear.Year == (new Date()).getFullYear()) {
+         this.fun.Swal_Advertencia('El mes seleccionado no es válido. Por favor, elija un mes o año anterior.', 'Advertencia: Inicio Rango');
+         return;        
+      }
+
+      if (this.varb.selectMesFin.value == (new Date().getMonth() + 1) && this.varb.selectYearFin.Year == (new Date()).getFullYear()) {
+         this.fun.Swal_Advertencia('El mes seleccionado no es válido. Por favor, elija un mes o año anterior.', 'Advertencia: Fin Rango');
+         return;        
+      }
+
+      this.varb.loading     = true;
+      this.varb.loading_2   = true;
+      this.varb.viewFormato = true;
 
       this.Read_General().pipe(
          switchMap(() => this.Read_Tabla()),
          takeUntil(this.destroy$)
       ).subscribe({
          complete: () => {
-            this.varb.loading = false;
+            this.varb.loading   = false;
             this.varb.loading_2 = false;
          }
       });
+   }
+
+   Export_PDF () {
+      const form         = document.createElement("form");
+      form.target        = "_blank";
+      form.method        = "POST";
+      form.action        = `${this.url}report/PDF_resultados_generales_sucursal.php`;
+      form.style.display = "none";
+
+      // Función auxiliar para crear inputs rápido
+      const addInput = (name: string, value: any) => {
+         const input = document.createElement("input");
+         input.type  = "hidden";
+         input.name  = name;
+         // Si es un array (como tus sucursales), lo enviamos como string separado por comas o JSON
+         input.value = Array.isArray(value) ? JSON.stringify(value) : value;
+         form.appendChild(input);
+      };
+
+      // Agregamos los datos
+      addInput("tabla", this.varb.sucursales); // En PHP lo recibes como string y haces json_decode
+      addInput("mes_inicio", this.varb.selectMes.mes);
+      addInput("mes_fin", this.varb.selectMesFin.mes);
+      addInput("year_inicio", this.varb.selectYear.Year);
+      addInput("year_fin", this.varb.selectYearFin.Year);
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
    }
 
    private extraerClavesMeses(data: SucursalData[]): string[] {
